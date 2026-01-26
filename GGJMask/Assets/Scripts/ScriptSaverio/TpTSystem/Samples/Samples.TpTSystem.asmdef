@@ -1,0 +1,16 @@
+{
+    "name": "Samples.TpTSystem",
+    "rootNamespace": "Samples.TpTSystem",
+    "references": [
+        "GUID:35cf6d210fcb7fe4bb8558693fd69f56"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

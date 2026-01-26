@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "name": "PlayerInputs",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "36025db9-1732-453f-b8ed-396f484a1b35",
+            "actions": [
+                {
+                    "name": "Validate",
+                    "type": "Button",
+                    "id": "5e089763-086c-469e-901b-bb4b214349b6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "IaValidate",
+                    "type": "Button",
+                    "id": "f4d76192-0380-448a-91fe-ae8ab943cf63",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "36dce62e-9afa-423c-ac76-e6318d970780",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Validate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0203419-8bc8-4aa1-b11d-05b6f5735827",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "IaValidate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
