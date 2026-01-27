@@ -13,6 +13,19 @@ namespace RunTime.TpTSystem
 			isMyTurn = true;
 		}
 
+		private void ChooseCart()
+		{
+			if (!isMyTurn)
+				return;
+			
+			
+		}
+
+		private void Validate()
+		{
+			
+		}
+
 		public void EndIATurn()
 		{
 			if (!isMyTurn)

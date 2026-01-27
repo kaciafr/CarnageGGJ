@@ -67,6 +67,7 @@ namespace RunTime.TpTSystem
 			WhoWin();
 			
 			Debug.Log("End of the manche");
+			
 			if (playerData.PV <= 1)
 			{
 				EndGame();

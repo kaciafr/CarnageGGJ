@@ -1,12 +1,12 @@
-        
 using System;
-using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RunTime.TpTSystem
 {
     public class PlayerTurnBase :  MonoBehaviour
     {
+        private List<Card> handCards;
         public event Action<PlayerTurnBase> OnPlayerTurn;
         public bool isMyTurn = false;
 
@@ -14,6 +14,8 @@ namespace RunTime.TpTSystem
         {
             isMyTurn = true;
             Debug.Log("StartTurn");
+            
+            
         }
 
         public void EndTurn()
