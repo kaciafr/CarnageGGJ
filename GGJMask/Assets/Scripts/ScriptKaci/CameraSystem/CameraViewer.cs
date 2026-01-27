@@ -13,7 +13,6 @@ public class CameraViewer : MonoBehaviour
         Buttoncam.onClick.AddListener(() => SwitchToCamera(cam));
         Buttoncam2.onClick.AddListener(() => SwitchToCamera(cam2));
 
-        // Initialize - only first camera active
         SwitchToCamera(cam);
     }
 
