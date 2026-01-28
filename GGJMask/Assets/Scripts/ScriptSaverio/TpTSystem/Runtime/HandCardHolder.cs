@@ -17,8 +17,11 @@ namespace RunTime.TpTSystem
        [SerializeField] private List<Card> cards;
        [SerializeField] private List<Transform> slots;
        
-       private Transform referenceLocation;
        [SerializeField] private int maxSlot = 2;
+       
+       private RectTransform rect;
+       private Transform referenceLocation;
+       
 
        private void Start()
        {
@@ -43,10 +46,6 @@ namespace RunTime.TpTSystem
 	       }
 	       
        }
-       public void Update()
-       {
-       }
-       
        private void BeginDrag(Card cards)
        {
 	       selectCard = cards;
@@ -62,9 +61,24 @@ namespace RunTime.TpTSystem
 	       Vector3 targetPosition = selectCard.transform.localPosition;
 	       targetPosition = Vector3.zero;
 	       bool tweenCardReturn=true;
+	       
 	       selectCard.transform.DOLocalMove(targetPosition, 0.12f).SetEase(Ease.OutBack);
 	       
+	       rect.sizeDelta += Vector2.right;
+	       rect.sizeDelta -= Vector2.right;
 	       
+	       selectCard =  null;
+	       
+       }
+
+       void Update()
+       {
+	       
+       }
+       
+       void Swap(int index)
+       {
+	       if (selectCard == null) ;
        }
        
     }

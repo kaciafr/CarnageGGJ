@@ -57,9 +57,10 @@ namespace RunTime.TpTSystem
 				//transform.Translate(velocity * Time.deltaTime);
 				transform.position = Vector2.MoveTowards(transform.position, mouseScreenPos, moveSpeedLimit * Time.deltaTime);
 				
-				Vector2 delta = Mouse.current.delta.ReadValue();
-				Vector2 rot = delta * rotateSpeedLimit;
-				transform.rotation = Quaternion.Euler(0 ,0,rot.y);
+				float mouseX = Mouse.current.delta.value.x /rotatebreakLimit;
+
+				transform.rotation *= Quaternion.Euler(0, 0, mouseX);
+
 			}
 			
 		}
@@ -110,6 +111,7 @@ namespace RunTime.TpTSystem
 
 		public void OnPointerEnter(PointerEventData eventData)
 		{
+			
 		}
 
 		public void OnPointerExit(PointerEventData eventData)
@@ -122,7 +124,7 @@ namespace RunTime.TpTSystem
 			Debug.Log("OnPointerUp");
 			selected = !selected;
 			if (selected)
-				transform.localPosition += transform.up;
+				transform.localPosition += transform.up*90;
 			else
 				transform.localPosition = Vector3.zero;
 
