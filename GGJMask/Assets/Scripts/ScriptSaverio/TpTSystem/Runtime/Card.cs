@@ -9,33 +9,39 @@ using UnityEngine.UI;
 
 namespace RunTime.TpTSystem
 {
-	public class Card : MonoBehaviour,IDragHandler,IBeginDragHandler,IEndDragHandler,IPointerEnterHandler,IPointerExitHandler,IPointerUpHandler,IPointerDownHandler
+	public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler,
+		IPointerExitHandler, IPointerUpHandler, IPointerDownHandler
 	{
 		private bool isDragging = false;
 		private bool wasDragged;
-		
+
 		private Vector3 offset;
 		private Canvas canvas;
 		private Image imageComponent;
-		
-		[Header("FollowSpeed")]
-		[SerializeField] private float moveSpeedLimit = 50f;
-		
-		[Header("Rotation followSpeed")]
-		[SerializeField] private float rotateSpeedLimit = 1f;
-		[SerializeField] private float rotatebreakLimit = 2f;
-		
-		
-		
-		[HideInInspector] public UnityEvent<Card> BeginDragEvent ;
-		[HideInInspector] public UnityEvent<Card> EndDragEvent ;
-		[HideInInspector] public UnityEvent<Card> PointerEnterEvent ;
-		[HideInInspector] public UnityEvent<Card> PointerExitEvent ;
-		[HideInInspector] public UnityEvent<Card,bool> PointerUpEvent ;
-		[HideInInspector] public UnityEvent<Card> PointerDownEvent ;
-		[HideInInspector] public UnityEvent<Card,bool> SelectedCardEvent;
 
-		private bool selected;
+		[Header("FollowSpeed")] [SerializeField]
+		private float moveSpeedLimit = 50f;
+
+		[Header("Rotation followSpeed")] [SerializeField]
+		private float rotateSpeedLimit = 1f;
+
+		[SerializeField] private float rotatebreakLimit = 2f;
+
+
+
+		[HideInInspector] public UnityEvent<Card> BeginDragEvent;
+		[HideInInspector] public UnityEvent<Card> EndDragEvent;
+		[HideInInspector] public UnityEvent<Card> PointerEnterEvent;
+		[HideInInspector] public UnityEvent<Card> PointerExitEvent;
+		[HideInInspector] public UnityEvent<Card, bool> PointerUpEvent;
+		[HideInInspector] public UnityEvent<Card> PointerDownEvent;
+		[HideInInspector] public UnityEvent<Card, bool> SelectedCardEvent;
+
+		public bool selected;
+		public float selectionOffset = 50;
+
+		private float pointerUpTime;
+		private float pointerDownTime;
 
 
 		void Start()
@@ -50,24 +56,26 @@ namespace RunTime.TpTSystem
 			{
 				Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
 				mouseScreenPos.z = Camera.main.WorldToScreenPoint(transform.position).z;
-				
+
 				Vector2 targetPosition = Camera.main.ScreenToWorldPoint(mouseScreenPos) - offset;
 				Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
-				Vector2 velocity = direction * Mathf.Min(moveSpeedLimit, Vector2.Distance(transform.position, targetPosition) / Time.deltaTime);
+				Vector2 velocity = direction * Mathf.Min(moveSpeedLimit,
+					Vector2.Distance(transform.position, targetPosition) / Time.deltaTime);
 				//transform.Translate(velocity * Time.deltaTime);
-				transform.position = Vector2.MoveTowards(transform.position, mouseScreenPos, moveSpeedLimit * Time.deltaTime);
-				
-				float mouseX = Mouse.current.delta.value.x /rotatebreakLimit;
+				transform.position =
+					Vector2.MoveTowards(transform.position, mouseScreenPos, moveSpeedLimit * Time.deltaTime);
+
+				float mouseX = Mouse.current.delta.value.x / rotatebreakLimit;
 
 				transform.rotation *= Quaternion.Euler(0, 0, mouseX);
 
 			}
-			
+
 		}
-		
+
 		public void OnDrag(PointerEventData eventData)
 		{
-			
+
 		}
 
 		public void OnBeginDrag(PointerEventData eventData)
@@ -76,27 +84,27 @@ namespace RunTime.TpTSystem
 			Vector2 mousePosition = Camera.main.ScreenToWorldPoint(eventData.position);
 			offset = mousePosition - (Vector2)transform.position;
 			isDragging = true;
-			
-			
+
+
 			canvas.GetComponent<GraphicRaycaster>().enabled = false;
 			imageComponent.raycastTarget = false;
-			
-			
+
+
 
 			wasDragged = true;
 			BeginDragEvent.Invoke(this);
 		}
-		
+
 
 		public void OnEndDrag(PointerEventData eventData)
 		{
 			Debug.Log("OnEndDrag");
 			EndDragEvent.Invoke(this);
-			transform.eulerAngles = new Vector3(0,0,0);
+			transform.eulerAngles = new Vector3(0, 0, 0);
 			isDragging = false;
 			canvas.GetComponent<GraphicRaycaster>().enabled = true;
 			imageComponent.raycastTarget = true;
-			
+
 			StartCoroutine(FrameWait());
 
 			IEnumerator FrameWait()
@@ -104,36 +112,56 @@ namespace RunTime.TpTSystem
 				yield return new WaitForEndOfFrame();
 				wasDragged = false;
 			}
-			
-			wasDragged=false;
-			
+
+			wasDragged = false;
+
 		}
 
 		public void OnPointerEnter(PointerEventData eventData)
 		{
-			
+
 		}
 
 		public void OnPointerExit(PointerEventData eventData)
 		{
-			
+
 		}
 
 		public void OnPointerUp(PointerEventData eventData)
 		{
 			Debug.Log("OnPointerUp");
 			selected = !selected;
+			pointerUpTime = Time.time;
+			PointerUpEvent.Invoke(this, pointerUpTime - pointerDownTime > 2f);
+			selected = !selected;
+			Select();
+
+			SelectedCardEvent.Invoke(this, selected);
+
+			/*if (selected)
+				transform.localPosition += (cardVisual.transform.up * selectionOffset);
+			else
+				transform.localPosition = Vector3.zero;*/
+
+		}
+
+		public void Select()
+		{
+			selected = !selected;
 			if (selected)
-				transform.localPosition += transform.up*90;
+				transform.localPosition += transform.up * 90;
 			else
 				transform.localPosition = Vector3.zero;
-
 		}
 
 		public void OnPointerDown(PointerEventData eventData)
 		{
-			
+
 		}
-		
+
+		public int ParentIndex()
+		{
+			return transform.parent.CompareTag("Slot") ? transform.parent.GetSiblingIndex() : 0;
+		}
 	}
 }

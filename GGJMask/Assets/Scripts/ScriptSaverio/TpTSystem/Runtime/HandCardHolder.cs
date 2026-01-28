@@ -66,8 +66,6 @@ namespace RunTime.TpTSystem
 	       
 	       selectCard.transform.DOLocalMove(targetPosition, 0.12f).SetEase(Ease.OutBack);
 	       
-	       rect.sizeDelta += Vector2.right;
-	       rect.sizeDelta -= Vector2.right;
 	       
 	       selectCard =  null;
 	       
@@ -78,13 +76,55 @@ namespace RunTime.TpTSystem
 	       if(selectCard == null) return;
 
 	       if (isCrossing) return;
-	       
+	       for (int i = 0; i < cards.Count; i++)
+	       {
+
+		       if (selectCard.transform.position.x > cards[i].transform.position.x)
+		       {
+			       if (selectCard.ParentIndex() < cards[i].ParentIndex())
+			       {
+				       Swap(i);
+				       break;
+			       }
+		       }
+
+		       if (selectCard.transform.position.x < cards[i].transform.position.x)
+		       {
+			       if (selectCard.ParentIndex() > cards[i].ParentIndex())
+			       {
+				       Swap(i);
+				       break;
+			       }
+		       }
+	       }
 	       
        }
        
        void Swap(int index)
        {
-	       if (selectCard == null) ;
+	       isCrossing = true;
+
+	       Transform focusedParent = selectCard.transform.parent;
+	       Transform crossedParent = cards[index].transform.parent;
+
+	       cards[index].transform.SetParent(focusedParent);
+	       cards[index].transform.localPosition = cards[index].selected ? new Vector3(0, cards[index].selectionOffset, 0) : Vector3.zero;
+	       selectCard.transform.SetParent(crossedParent);
+
+	       isCrossing = false;
+
+	      // if (cards[index].cardVisual == null)
+		       return;
+
+	       //bool swapIsRight = cards[index].ParentIndex() > selectCard.ParentIndex();
+	       
+	      /* cards[index].cardVisual.Swap(swapIsRight ? -1 : 1);
+
+	       //Updated Visual Indexes
+	       foreach (Card card in cards)
+	       {
+		       card.cardVisual.UpdateIndex(transform.childCount);
+	       }*/
        }
        
     }
