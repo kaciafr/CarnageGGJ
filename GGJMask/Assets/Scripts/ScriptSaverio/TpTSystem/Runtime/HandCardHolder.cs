@@ -21,6 +21,8 @@ namespace RunTime.TpTSystem
        
        private RectTransform rect;
        private Transform referenceLocation;
+
+       private bool isCrossing = false;
        
 
        private void Start()
@@ -73,6 +75,10 @@ namespace RunTime.TpTSystem
 
        void Update()
        {
+	       if(selectCard == null) return;
+
+	       if (isCrossing) return;
+	       
 	       
        }
        
