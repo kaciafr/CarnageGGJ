@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace RunTime.TpTSystem
 {
-	public class Card : MonoBehaviour, IDragHandler,IDropHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler,
+	public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler,
 		IPointerExitHandler, IPointerUpHandler, IPointerDownHandler
 	{
 		public bool isDragging = false;
@@ -19,6 +19,7 @@ namespace RunTime.TpTSystem
 		private Vector3 offset;
 		private Canvas canvas;
 		private Image imageComponent;
+		private Transform originalParent;
 
 		[Header("FollowSpeed")] 
 		[SerializeField]
@@ -36,7 +37,6 @@ namespace RunTime.TpTSystem
 		[HideInInspector] public UnityEvent<Card> EndDragEvent;
 		[HideInInspector] public UnityEvent<Card, bool> PointerUpEvent;
 		[HideInInspector] public UnityEvent<Card, bool> SelectedCardEvent;
-		[HideInInspector] public UnityEvent<Card> SelectCardEvent;
 		
 		public BankCard bankCard;
 		public HandCardHolder handCardHolder;
@@ -53,6 +53,7 @@ namespace RunTime.TpTSystem
 		{
 			canvas = GetComponentInParent<Canvas>();
 			handCardHolder = GetComponentInParent<HandCardHolder>();
+			bankCard = GetComponentInParent<BankCard>();
 			imageComponent = GetComponent<Image>();
 		}
 
@@ -76,24 +77,26 @@ namespace RunTime.TpTSystem
 		{
 
 		}
+
 		public void OnBeginDrag(PointerEventData eventData)
 		{
 			Debug.Log("OnBeginDrag");
 
 			BeginDragEvent.Invoke(this);
-			
+
 			Vector2 mousePosition = Camera.main.ScreenToWorldPoint(eventData.position);
 			offset = mousePosition - (Vector2)transform.position;
 			isDragging = true;
-			shadow.transform.localPosition = Vector3.down*90;
-			
+			shadow.transform.localPosition = Vector3.down * 90;
+
 			canvas.GetComponent<GraphicRaycaster>().enabled = false;
 			
 			imageComponent.raycastTarget = false;
 
 			wasDragged = true;
-			
+
 		}
+
 		public void OnEndDrag(PointerEventData eventData)
 		{
 			EndDragEvent.Invoke(this);
@@ -105,6 +108,7 @@ namespace RunTime.TpTSystem
 			shadow.transform.localPosition = Vector3.zero;
 			
 			StartCoroutine(FrameWait());
+			
 			IEnumerator FrameWait()
 			{
 				yield return new WaitForEndOfFrame();
@@ -125,7 +129,8 @@ namespace RunTime.TpTSystem
 			selected = !selected;
 			pointerUpTime = Time.time;
 			PointerUpEvent.Invoke(this, pointerUpTime - pointerDownTime > 2f);
-			Select();
+			if (!wasDragged)
+				Select();
 
 			SelectedCardEvent.Invoke(this, selected);
 
@@ -136,7 +141,6 @@ namespace RunTime.TpTSystem
 			{
 				transform.localPosition += transform.up * 90;
 				shadow.transform.localPosition -= transform.up * 90;
-				ChangeParent();
 			}
 			else
 			{
@@ -149,31 +153,13 @@ namespace RunTime.TpTSystem
 		{
 
 		}
-		public void OnDrop(PointerEventData eventData)
-		{
-			
-		}
 		public int ParentIndex()
 		{
 			
 			return transform.parent.CompareTag("Slot") ? transform.parent.GetSiblingIndex() : 0;
 		}
 
-		public void ChangeParent()
-		{
-			if (bankCard.maxSlots <= 2)
-			{
-				bankCard.maxSlots++;
-				bankCard.Add();
-				handCardHolder.RemoveCard(this);
-			}
-			else
-			{
-				Debug.LogError("Max slots exceeded");
-			}
-			Debug.Log(bankCard.maxSlots);
-
-		}
+		
 		
 	}
 }
