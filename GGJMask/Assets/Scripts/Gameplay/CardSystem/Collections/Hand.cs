@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Gameplay.CardSystem.Collections
@@ -29,5 +30,36 @@ namespace Gameplay.CardSystem.Collections
             
             return base.AddCard(card);
         }
+        
+        public List<ICard> GetCards()
+        {
+            return cards; 
+        }
+        
+        public void TransferTo(Hand otherHand, int nbCards)
+        {
+            int cardsToTransfer = Mathf.Min(nbCards, Count);
+    
+            for (int i = 0; i < cardsToTransfer; i++)
+            {
+                ICard card = GetCard(0);
+        
+                if (card != null)
+                {
+                    RemoveCard(card);
+            
+                    bool success = otherHand.AddCard(card);
+            
+                    if (!success)
+                    {
+                        AddCard(card);
+                        break; // Arrêter le transfert
+                    }
+                }
+            }
+        }
+
+        
+        
     }
 }

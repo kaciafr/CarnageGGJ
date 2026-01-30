@@ -8,8 +8,8 @@ namespace Gameplay.CardSystem.Collections
     {
         public event Action<ICard> CardAdded;
         public event Action<ICard> CardRemoved;
-        
-        private readonly List<ICard> cards = new ();
+
+        protected readonly List<ICard> cards = new ();
         public IReadOnlyList<ICard> Cards => cards;
 
         public int Count => cards.Count;
