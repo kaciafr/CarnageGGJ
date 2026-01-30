@@ -16,7 +16,9 @@ namespace Gameplay.CardSystem.Collections
                 return a.CompareTo(b);
             }
         }
-        
+
+
+       
         public void Shuffle()
         {
             using (ListPool<ICard>.Get(out var list))

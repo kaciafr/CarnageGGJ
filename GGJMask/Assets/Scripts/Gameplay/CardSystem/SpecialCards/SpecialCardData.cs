@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay.CardSystem.SpecialCards
 {
-    [CreateAssetMenu( menuName = "Card/cardData", order = 0)]
+    [CreateAssetMenu( menuName = "Card/SpecialcardData", order = 0)]
     public class SpecialCardData : ScriptableObject
     {
         [field: SerializeField]
