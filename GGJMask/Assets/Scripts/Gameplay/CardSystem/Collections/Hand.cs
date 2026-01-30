@@ -5,14 +5,11 @@ namespace Gameplay.CardSystem.Collections
     public class Hand : CardCollection
     {
         public int MaxCards { get; private set; }
-
-
         public Hand(int maxCards = 5)
         {
             MaxCards = maxCards;
         }
         
-        // Un carte par son index 
         public ICard RemoveCardAtIndex(int index)
         {
             var card = GetCard(index);
