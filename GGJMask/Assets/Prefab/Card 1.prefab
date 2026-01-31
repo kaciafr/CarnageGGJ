@@ -136,9 +136,17 @@ MonoBehaviour:
   isDragging: 0
   selected: 0
   selectionOffset: 50
+  cardVisual: {fileID: 0}
   BeginDragEvent:
     m_PersistentCalls:
       m_Calls: []
   EndDragEvent:
     m_PersistentCalls:
       m_Calls: []
+  EnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  wasDragged: 0

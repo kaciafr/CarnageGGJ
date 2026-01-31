@@ -1,13 +1,14 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace RunTime.TpTSystem
 {
-    public class Cards : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class Cards : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler,IPointerEnterHandler,IPointerExitHandler
     {
         [Header("Rotation followSpeed")] [SerializeField]
         private float rotateSpeedLimit = 1f;
@@ -18,19 +19,25 @@ namespace RunTime.TpTSystem
         public bool selected = false;
         public float selectionOffset = 50;
         
+        [Header("Visual")]
+        public CardVisual cardVisual;
+        
         
         [HideInInspector] public UnityEvent<Cards> BeginDragEvent;
         [HideInInspector] public UnityEvent<Cards> EndDragEvent;
+        [HideInInspector] public UnityEvent<Cards> EnterEvent;
+        [HideInInspector] public UnityEvent<Cards> ExitEvent;
         
         private float angleY;
         private Canvas canvas;
         private Image imageComponent;
+        public bool wasDragged = false;
         private Vector3 offset;
-
         private void Start()
         {
-            canvas = GetComponent<Canvas>();
+            canvas = GetComponentInParent<Canvas>();
             imageComponent = GetComponent<Image>();
+            cardVisual =  GetComponent<CardVisual>();
             
         }
         private void Update()
@@ -60,7 +67,7 @@ namespace RunTime.TpTSystem
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(eventData.position);
             offset = mousePosition - (Vector2)transform.position;
-            Debug.Log("begin drag");
+            wasDragged = true;
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -73,7 +80,7 @@ namespace RunTime.TpTSystem
             imageComponent.raycastTarget = true;
 
             transform.eulerAngles = Vector3.zero;
-            Debug.Log("yo");
+            wasDragged = false;
 
         }
         public void OnDrag(PointerEventData eventData)
@@ -83,6 +90,16 @@ namespace RunTime.TpTSystem
         public int ParentIndex()
         {
             return transform.parent.CompareTag("Slot") ? transform.parent.GetSiblingIndex() : 0;
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            EnterEvent.Invoke(this);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            ExitEvent.Invoke(this);
         }
     }
 }
