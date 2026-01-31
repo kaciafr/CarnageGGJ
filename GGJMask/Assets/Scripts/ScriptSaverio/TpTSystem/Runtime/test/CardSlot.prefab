@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8864183942250582894}
   - component: {fileID: -1272571422949656736}
   - component: {fileID: -199700661879326609}
+  - component: {fileID: 8359006225460284367}
   m_Layer: 5
   m_Name: CardSlot
   m_TagString: Slot
@@ -75,3 +76,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8359006225460284367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8391894475510917430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 819c2bc252b4ce942808ec7101a4d3e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RunTime.TpTSystem::RunTime.TpTSystem.Slots
+  hovering: 0
