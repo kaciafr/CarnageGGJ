@@ -6,7 +6,7 @@ namespace RunTime.TpTSystem
 {
     public class PlayerTurnBase :  MonoBehaviour
     {
-        private List<Card> handCards;
+        private List<Cards> handCards;
         public event Action<PlayerTurnBase> OnPlayerTurn;
         public bool isMyTurn = false;
 
