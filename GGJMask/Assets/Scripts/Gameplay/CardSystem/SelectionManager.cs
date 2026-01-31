@@ -1,86 +1,116 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Gameplay.CardSystem.UI;
 
 namespace Gameplay.CardSystem
 {
+
+
     public class SelectionManager : MonoBehaviour
     {
-        private List<CardUI> selectedCards = new List<CardUI>();
-        
+        public GameManager GameManagerRef;
+
+        private SelectionType currentSelectionMode = SelectionType.None;
+
+        private readonly List<UI.CardUI> selectedCards = new List<UI.CardUI>();
+
         [SerializeField] private int maxSelectionAttack = 3;
         [SerializeField] private int maxSelectionDefense = 2;
-        
-        private SelectionType currentSelectionMode = SelectionType.None;
+
+        public SelectionType CurrentSelectionMode => currentSelectionMode;
+
+        private void Start()
+        {
+            if (GameManagerRef == null)
+            {
+                GameManagerRef = FindObjectOfType<GameManager>();
+            }
+        }
 
         public void SetSelectionMode(SelectionType mode)
         {
             currentSelectionMode = mode;
             ClearSelection();
-            Debug.Log($"Mode de sélection activé: {mode}");
+            Debug.Log($"Selection mode set to: {currentSelectionMode}");
         }
 
-        public void ToggleCardSelection(CardUI cardUI)
+        public void ToggleCardSelection(UI.CardUI cardUI)
         {
-            if (currentSelectionMode == SelectionType.None)
-            {
-                Debug.Log("Aucun mode de sélection actif!");
-                return;
-            }
+            if (cardUI == null) return;
+
+            SelectionType effectiveMode = currentSelectionMode == SelectionType.None
+                ? SelectionType.Attack
+                : currentSelectionMode;
 
             if (selectedCards.Contains(cardUI))
             {
                 selectedCards.Remove(cardUI);
                 cardUI.Deselect();
-                Debug.Log($"Carte désélectionnée. Total: {selectedCards.Count}");
+                Debug.Log($"Carte désélectionnée. Total sélectionnées: {selectedCards.Count}");
+                return;
             }
-            else
-            {
-                int maxCards = currentSelectionMode == SelectionType.Attack ? maxSelectionAttack : maxSelectionDefense;
-                
-                if (selectedCards.Count >= maxCards)
-                {
-                    Debug.Log($"Limite atteinte! Maximum: {maxCards} cartes");
-                    return;
-                }
 
-                selectedCards.Add(cardUI);
-                cardUI.Select(currentSelectionMode);
-                Debug.Log($"Carte sélectionnée. Total: {selectedCards.Count}/{maxCards}");
+            int maxAllowed = effectiveMode == SelectionType.Attack ? maxSelectionAttack : maxSelectionDefense;
+            if (selectedCards.Count >= maxAllowed)
+            {
+                Debug.Log($"Limite de sélection atteinte pour {effectiveMode} (max {maxAllowed})");
+                return;
             }
+
+            selectedCards.Add(cardUI);
+            cardUI.Select(effectiveMode);
+            Debug.Log($"Carte sélectionnée en mode {effectiveMode}. Total: {selectedCards.Count}/{maxAllowed}");
         }
 
-        public List<ICard> GetSelectedCards()
+        public List<UI.CardUI> GetSelectedCardUIs()
         {
-            List<ICard> cards = new List<ICard>();
-            foreach (CardUI cardUI in selectedCards)
+            return new List<UI.CardUI>(selectedCards);
+        }
+
+        public void ConfirmTransferToAttack()
+        {
+            if (GameManagerRef == null)
             {
-                if (cardUI.CurrentCard != null)
-                {
-                    cards.Add(cardUI.CurrentCard);
-                }
+                Debug.LogWarning("GameManagerRef non assigné dans SelectionManager.");
+                return;
             }
-            return cards;
+
+            var sel = GetSelectedCardUIs();
+            if (sel.Count == 0) return;
+
+            GameManagerRef.TransferSelectedToAttack(sel);
+            ClearSelection();
+        }
+
+        public void ConfirmTransferToDefense()
+        {
+            if (GameManagerRef == null)
+            {
+                Debug.LogWarning("GameManagerRef non assigné dans SelectionManager.");
+                return;
+            }
+
+            var sel = GetSelectedCardUIs();
+            if (sel.Count == 0) return;
+
+            GameManagerRef.TransferSelectedToDefense(sel);
+            ClearSelection();
         }
 
         public void ClearSelection()
         {
-            foreach (CardUI cardUI in selectedCards)
+            for (int i = selectedCards.Count - 1; i >= 0; i--)
             {
-                cardUI.Deselect();
+                var ui = selectedCards[i];
+                if (ui != null) ui.Deselect();
             }
             selectedCards.Clear();
-            Debug.Log("Sélection effacée");
+            Debug.Log("Sélection nettoyée.");
         }
 
-        public int GetSelectedCount()
+        public void SetMaxSelection(int attackMax, int defenseMax)
         {
-            return selectedCards.Count;
-        }
-
-        public SelectionType GetCurrentMode()
-        {
-            return currentSelectionMode;
+            maxSelectionAttack = Mathf.Max(0, attackMax);
+            maxSelectionDefense = Mathf.Max(0, defenseMax);
         }
     }
 }

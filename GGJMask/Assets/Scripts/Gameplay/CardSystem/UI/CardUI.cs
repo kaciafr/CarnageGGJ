@@ -15,15 +15,23 @@ namespace Gameplay.CardSystem.UI
         [SerializeField] private Image backgroundImage;
         [SerializeField] private Image selectionOverlay;
 
-        private SelectionManager selectionManager;
+        private Gameplay.CardSystem.SelectionManager selectionManager;
 
         public ICard CurrentCard { get; private set; }
         public bool IsSelected { get; private set; }
-        public SelectionType SelectionType { get; private set; }
+        public Gameplay.CardSystem.SelectionType SelectionType { get; private set; }
 
-        public void Initialize(SelectionManager manager)
+        // Index correspondant à la position dans la main (0..Count-1)
+        public int CardIndex { get; private set; }
+
+        public void Initialize(Gameplay.CardSystem.SelectionManager manager)
         {
             selectionManager = manager;
+        }
+
+        public void SetIndex(int index)
+        {
+            CardIndex = index;
         }
 
         public void Connect(ICard card)
@@ -37,13 +45,12 @@ namespace Gameplay.CardSystem.UI
                     icon.sprite = scoreCard.Icon;
                     icon.enabled = true;
                 }
-
                 if (scoreText != null)
                 {
                     scoreText.text = scoreCard.Score.ToString();
                     scoreText.enabled = true;
                 }
-                
+
                 if (backgroundImage != null)
                 {
                     backgroundImage.color = GetSuitColor(scoreCard.Suit);
@@ -92,17 +99,17 @@ namespace Gameplay.CardSystem.UI
             Deselect();
         }
 
-        public void Select(SelectionType type)
+        public void Select(Gameplay.CardSystem.SelectionType type)
         {
             IsSelected = true;
             SelectionType = type;
-            
+
             if (selectionOverlay != null)
             {
                 selectionOverlay.enabled = true;
-                selectionOverlay.color = type == Gameplay.CardSystem.SelectionType.Attack 
+                selectionOverlay.color = type == Gameplay.CardSystem.SelectionType.Attack
                     ? new Color(1f, 0f, 0f, 0.5f)  // Rouge pour attaque
-                    : new Color(0f, 0f, 1f, 0.5f); // Bleu pour défense
+                    : new Color(0f, 0f, 1f, 0.5f); // Bleu pour défense (si ajouté)
             }
         }
 

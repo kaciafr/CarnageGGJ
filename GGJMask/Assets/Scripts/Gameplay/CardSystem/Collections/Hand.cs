@@ -53,7 +53,7 @@ namespace Gameplay.CardSystem.Collections
                     if (!success)
                     {
                         AddCard(card);
-                        break; // Arrêter le transfert
+                        break; // 
                     }
                 }
             }

@@ -8,6 +8,8 @@ namespace Gameplay.CardSystem
         public Hand HandDefence { get; set;}
         public Hand HandAttack { get; set;}
         
+        public int health;
+        
         
         
     }
