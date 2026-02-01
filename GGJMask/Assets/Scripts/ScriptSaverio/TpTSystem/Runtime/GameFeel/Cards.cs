@@ -3,12 +3,13 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace RunTime.TpTSystem
 {
-    public class Cards : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler,IPointerEnterHandler,IPointerExitHandler
+    public class Cards : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler
     {
         [Header("Rotation followSpeed")] [SerializeField]
         private float rotateSpeedLimit = 1f;
@@ -16,12 +17,21 @@ namespace RunTime.TpTSystem
         [SerializeField] private float moveSpeedLimit = 600;
         
         public bool isDragging = false;
-        public bool selected = false;
+        public bool selected = true;
         public float selectionOffset = 50;
         
         [Header("Visual")]
-        public CardVisual cardVisual;
-        
+        //public CardVisual cardVisual;
+        //private VisualInstance cardVisualInstance;
+        //[SerializeField] private GameObject cardVisualPrefab;
+        [SerializeField] private GameObject shadow;
+        [SerializeField] private bool instantiateVisual = true;
+
+        [Header("Parametre animation")] 
+        [SerializeField]
+        private float shake;
+        [SerializeField]
+        private float scale;
         
         [HideInInspector] public UnityEvent<Cards> BeginDragEvent;
         [HideInInspector] public UnityEvent<Cards> EndDragEvent;
@@ -37,7 +47,16 @@ namespace RunTime.TpTSystem
         {
             canvas = GetComponentInParent<Canvas>();
             imageComponent = GetComponent<Image>();
-            cardVisual =  GetComponent<CardVisual>();
+
+           /*if (!instantiateVisual)
+            {
+                Debug.Log("il manque un truc ou c'est mal mis");
+                return;
+            }
+            
+            cardVisualInstance = FindObjectOfType<VisualInstance>();
+            cardVisual = Instantiate(cardVisualPrefab, cardVisualInstance ? cardVisualInstance.transform : canvas.transform).GetComponent<CardVisual>();
+            cardVisual.Initialize(this);*/
             
         }
         private void Update()
@@ -59,7 +78,8 @@ namespace RunTime.TpTSystem
         public void OnBeginDrag(PointerEventData eventData)
         {
             isDragging = true;
-            BeginDragEvent.Invoke(this);
+            shadow.transform.localPosition -= transform.up * 70;
+            BeginDragEvent?.Invoke(this);
             
             Image canvasGroup = GetComponent<Image>();
             canvasGroup.raycastTarget = false;
@@ -67,19 +87,23 @@ namespace RunTime.TpTSystem
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(eventData.position);
             offset = mousePosition - (Vector2)transform.position;
+            
             wasDragged = true;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
             isDragging = false;
-            EndDragEvent.Invoke(this);
-
+            EndDragEvent?.Invoke(this);
+            
+            shadow.transform.localPosition = Vector3.zero;
+            
             Image canvasGroup = GetComponent<Image>();
             canvasGroup.raycastTarget = true;
             imageComponent.raycastTarget = true;
 
             transform.eulerAngles = Vector3.zero;
+            
             wasDragged = false;
 
         }
@@ -93,13 +117,40 @@ namespace RunTime.TpTSystem
         }
 
         public void OnPointerEnter(PointerEventData eventData)
-        {
-            EnterEvent.Invoke(this);
+        { 
+            EnterEvent?.Invoke(this);
+            shadow.transform.localPosition -= transform.up * 30;
+            
+            transform.DOScale(scale, 0.5f);
+            
+            transform.DOShakePosition(1f, shake);
+            
+            transform.DOShakeRotation(1f, shake);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            ExitEvent.Invoke(this);
+            transform.DOKill();
+            shadow.transform.localPosition = Vector3.zero;
+            
+            transform.DOScale(1, 0.5f);
+            transform.localRotation = Quaternion.Euler(0,0,0);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            selected = !selected;
+            
+            if (selected && !wasDragged)
+            {
+                transform.localPosition += transform.up * 90;
+                shadow.transform.localPosition -= transform.up * 70;
+            }
+            else
+            {
+                transform.localPosition = Vector3.zero;
+                shadow.transform.localPosition = Vector3.zero;
+            }
         }
     }
 }
