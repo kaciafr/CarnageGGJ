@@ -4,14 +4,11 @@ using Gameplay.CardSystem.Collections;
 using Gameplay.CardSystem.PointCards;
 using Gameplay.CardSystem.SpecialCards;
 using Gameplay.CardSystem.UI;
-using RunTime.TpTSystem;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace Gameplay.CardSystem
 {
-    public class UtilitiesCard : MonoBehaviour
+    public class UtilitiesCards : MonoBehaviour
     {
         public PlayerTurn PlayerTurn { get; set; }
         public IATurn IaTurn { get; set; }
@@ -20,7 +17,6 @@ namespace Gameplay.CardSystem
 
         [SerializeField] private ScoreCardLibrary scoreCardLibrary;
         [SerializeField] private SpecialCardData specialCardsData;
-
         [SerializeField] private int handSize = 5;
         [SerializeField] private int attackSize = 3;
         [SerializeField] private int defenseSize = 2;
@@ -35,8 +31,24 @@ namespace Gameplay.CardSystem
         [SerializeField] private Transform playerRiver;
         [SerializeField] private GameObject cardPrefab;
         [SerializeField] private SelectionManager selectionManager;
+        
+     
 
         private List<CardUI> playerCardUI = new List<CardUI>();
+        
+        public static UtilitiesCards instance { get; private set; }
+
+
+        private void Awake()
+        {
+            if (instance != null)
+            {
+                return; 
+            }
+
+            instance = this;
+        }
+
 
         private void Start()
         {
@@ -64,7 +76,7 @@ namespace Gameplay.CardSystem
 
             if (selectionManager != null)
             {
-                selectionManager.utilitiesCardRef = this;
+                selectionManager.utilitiesCardsRef = this;
             }
 
             DisplayPlayerHand();
@@ -279,7 +291,6 @@ namespace Gameplay.CardSystem
             DisplayAttack();
             if (selectionManager != null) selectionManager.ClearSelection();
 
-            ScoreAttack();
         }
         public void TransferSelectedToDefense(List<CardUI> selectedUIs)
         {
@@ -325,72 +336,14 @@ namespace Gameplay.CardSystem
 
             DisplayPlayerHand();
             DisplayDefense();
-            ScoreDefense();
             if (selectionManager != null) selectionManager.ClearSelection();
         }
+        
+        
 
 
 
-        public void ScoreAttack()
-        {
-            var playedCards = PlayerTurn.HandAttack.GetCards();
-            var riverCards = River.GetCards();
-
-            if (playedCards == null || playedCards.Count == 0)
-            {
-                Debug.Log("Pas de carte en attaque ");
-                return;
-            }
-
-            int baseSum = 0;
-            foreach (var card in playedCards)
-            {
-                if(card is ScoreCard scoreCard) baseSum += scoreCard.Score; 
-            }
-            
-            var riverCount = new Dictionary<CardSuit, int>();
-            foreach (CardSuit s in Enum.GetValues(typeof(CardSuit)))
-                riverCount[s] = 0;
-            if (riverCards != null)
-            {
-                foreach (var rc in riverCards)
-                    if (rc is ScoreCard rsc)
-                        riverCount[rsc.Suit]++;
-            }
-
-            int matching = 0;
-            foreach (var p in playedCards)
-            {
-                if (p is ScoreCard scoreCard)
-                    matching += riverCount[scoreCard.Suit];
-            }
-
-            int multiplier = 1 + matching;
-            int totalScore = baseSum * multiplier;
-            
-            Debug.Log($"[AttackScore] base={baseSum}, matching={matching}, multiplier=x{multiplier}, total={totalScore}");
-            
-        }
-
-        public void ScoreDefense()
-        {
-            var playedDenfence = PlayerTurn.HandDefence.GetCards();
-            if (playedDenfence == null || playedDenfence.Count == 0)
-            {
-                return; 
-                Debug.Log("Pas de carte dans la defence ");
-            }
-
-            int baseSum = 0; 
-            foreach (var cards in playedDenfence)
-            {
-                if(cards is ScoreCard scoreCard) 
-                    baseSum += scoreCard.Score; 
-            }
-            
-            Debug.Log($"base={baseSum}, matching={playedDenfence.Count}");
-             
-        }
+      
  
     }
     

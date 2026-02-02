@@ -21,6 +21,7 @@ namespace Gameplay.CardSystem.UI
         public bool IsSelected { get; private set; }
         public Gameplay.CardSystem.SelectionType SelectionType { get; private set; }
 
+        // Index correspondant à la position dans la main (0..Count-1)
         public int CardIndex { get; private set; }
 
         public void Initialize(Gameplay.CardSystem.SelectionManager manager)
@@ -107,8 +108,8 @@ namespace Gameplay.CardSystem.UI
             {
                 selectionOverlay.enabled = true;
                 selectionOverlay.color = type == Gameplay.CardSystem.SelectionType.Attack
-                    ? new Color(1f, 0f, 0f, 0.5f)  
-                    : new Color(0f, 0f, 1f, 0.5f); 
+                    ? new Color(1f, 0f, 0f, 0.5f)  // Rouge pour attaque
+                    : new Color(0f, 0f, 1f, 0.5f); // Bleu pour défense (si ajouté)
             }
         }
 

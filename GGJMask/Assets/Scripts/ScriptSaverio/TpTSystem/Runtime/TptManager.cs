@@ -11,11 +11,12 @@ namespace RunTime.TpTSystem
 		[SerializeField] private IATurnBase Ia;
 		
 		
-
+		
 		private void Awake()
 		{
 			player.OnPlayerTurn += PlayerTurnFinish;
 			Ia.OnIATurn += IaTurnFinish;
+			
 		}
 
 		private void Start()

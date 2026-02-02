@@ -17,7 +17,8 @@ namespace Gameplay.Player
         public KeyCode jumpKey = KeyCode.Space;
 
         [Header("Références")]
-        public Transform orientation; // assigne dans l'inspecteur
+        public Transform orientation;
+        
 
         private float horizontalInput;
         private float verticalInput;
