@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 1304970892903162147}
   - component: {fileID: 276743736378810316}
   - component: {fileID: 3982056824364931815}
-  - component: {fileID: -6701315551213855478}
   - component: {fileID: 4709575435152764991}
   - component: {fileID: 2367171341989037690}
   m_Layer: 5
@@ -197,24 +196,6 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 276743736378810316}
---- !u!114 &-6701315551213855478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4587343242975114039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60d53941307ba314fb93fc0f82365df3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: RunTime.TpTSystem::RunTime.TpTSystem.CardVisual
-  cards: {fileID: 4709575435152764991}
-  shadow: {fileID: 0}
-  shakeParent: {fileID: 0}
-  tiltParent: {fileID: 0}
-  cardImage: {fileID: 276743736378810316}
-  selectPunchAmount: 20
 --- !u!114 &4709575435152764991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,11 +214,11 @@ MonoBehaviour:
   isDragging: 0
   selected: 0
   selectionOffset: 50
+  cardVisual: {fileID: 0}
   shadow: {fileID: 1331700572778218109}
   instantiateVisual: 1
   shake: 10
   scale: 1.2
-  dragSlot: {fileID: 4299457350158563417, guid: 809371786d9843e48b3af0a4082daff2, type: 3}
   BeginDragEvent:
     m_PersistentCalls:
       m_Calls: []

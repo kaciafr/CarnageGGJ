@@ -9,18 +9,17 @@ namespace RunTime.TpTSystem
 	    
 	    [Header("Cards")]
 	    public Cards cards;
+
+	    [SerializeField] private GameObject cardPrefab;
 	    private Transform cardTransform;
 	    
 	    [Header("References")]
 	    public Transform shadow;
 	    private float shadowOffset = 20;
-	    private Vector2 shadowDistance;
 	    private Canvas shadowCanvas;
-	    [SerializeField] private Transform shakeParent;
-	    [SerializeField] private Transform tiltParent;
+	    [SerializeField] private float shake;
+	    [SerializeField] private float scale;
 	    [SerializeField] private Image cardImage;
-
-	    [Header("Scale Parameters")]
 	    
 	    [Header("Select Parameters")]
 	    [SerializeField] private float selectPunchAmount = 20;
@@ -28,14 +27,10 @@ namespace RunTime.TpTSystem
 	    private Transform cardsTransform;
 	    private Canvas canvas;
 	    private bool initialize = false;
-	    private void Start()
-	    {
-		    shadowDistance = shadow.localPosition;
-		    
-	    }
 
-	    public void Initialize(Cards target, int index = 0)
+	    public void Initialize(Cards target)
 	    {
+		    Debug.Log("Initializing CardVisual");
 		    cards = target;
 		    cardsTransform = target.transform;
 		    canvas = GetComponent<Canvas>();
@@ -48,23 +43,30 @@ namespace RunTime.TpTSystem
 		    
 		    initialize = true;
 	    }
-
-	    void Update()
-	    {
-		    
-	    }
 	    
 
 	    private void EnterEvent(Cards card)
 	    {
 		    cards = card;
-		    Debug.Log("Enculer");
+		    Debug.Log("Aigle");
+		    shadow.transform.localPosition -= transform.up * 30;
+            
+		    transform.DOScale(scale, 0.5f);
+            
+		    transform.DOShakePosition(1f, shake);
+            
+		    transform.DOShakeRotation(1f, shake);
 	    }
 
 	    private void ExitEvent(Cards card)
 	    {
 		    cards = card;
 		    Debug.Log("Rat");
+		    transform.DOKill();
+		    shadow.transform.localPosition = Vector3.zero;
+            
+		    transform.DOScale(1, 0.5f);
+		    transform.localRotation = Quaternion.Euler(0,0,0);
 	    }
 
 	    private void BeginDragEvent(Cards card)

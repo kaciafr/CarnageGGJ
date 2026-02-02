@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace RunTime.TpTSystem
 {
-    public class Cards : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler
+    public class Cards : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler,IPointerEnterHandler,IPointerExitHandler,IPointerUpHandler
     {
         [Header("Rotation followSpeed")] [SerializeField]
         private float rotateSpeedLimit = 1f;
@@ -21,9 +21,7 @@ namespace RunTime.TpTSystem
         public float selectionOffset = 50;
         
         [Header("Visual")]
-        //public CardVisual cardVisual;
-        //private VisualInstance cardVisualInstance;
-        //[SerializeField] private GameObject cardVisualPrefab;
+        public CardVisual cardVisual;
         [SerializeField] private GameObject shadow;
         [SerializeField] private bool instantiateVisual = true;
 
@@ -53,10 +51,8 @@ namespace RunTime.TpTSystem
                 Debug.Log("il manque un truc ou c'est mal mis");
                 return;
             }
-            
-            cardVisualInstance = FindObjectOfType<VisualInstance>();
-            cardVisual = Instantiate(cardVisualPrefab, cardVisualInstance ? cardVisualInstance.transform : canvas.transform).GetComponent<CardVisual>();
             cardVisual.Initialize(this);*/
+           
             
         }
         private void Update()
@@ -119,7 +115,7 @@ namespace RunTime.TpTSystem
         public void OnPointerEnter(PointerEventData eventData)
         { 
             EnterEvent?.Invoke(this);
-            shadow.transform.localPosition -= transform.up * 30;
+           shadow.transform.localPosition -= transform.up * 30;
             
             transform.DOScale(scale, 0.5f);
             
@@ -137,17 +133,19 @@ namespace RunTime.TpTSystem
             transform.localRotation = Quaternion.Euler(0,0,0);
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        public void OnPointerUp(PointerEventData eventData)
         {
             selected = !selected;
             
             if (selected && !wasDragged)
             {
+                transform.DOKill();
                 transform.localPosition += transform.up * 90;
                 shadow.transform.localPosition -= transform.up * 70;
             }
             else
             {
+                transform.DOKill();
                 transform.localPosition = Vector3.zero;
                 shadow.transform.localPosition = Vector3.zero;
             }
