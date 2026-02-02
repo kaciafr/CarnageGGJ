@@ -10,7 +10,7 @@ namespace Gameplay.CardSystem
         
         public int health;
         
-        
+        public int MaxHealth;
         
     }
 }

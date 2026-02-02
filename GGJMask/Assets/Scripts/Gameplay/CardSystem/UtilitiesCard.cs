@@ -11,7 +11,7 @@ using UnityEngine.SocialPlatforms.Impl;
 
 namespace Gameplay.CardSystem
 {
-    public class GameManager : MonoBehaviour
+    public class UtilitiesCard : MonoBehaviour
     {
         public PlayerTurn PlayerTurn { get; set; }
         public IATurn IaTurn { get; set; }
@@ -64,7 +64,7 @@ namespace Gameplay.CardSystem
 
             if (selectionManager != null)
             {
-                selectionManager.GameManagerRef = this;
+                selectionManager.utilitiesCardRef = this;
             }
 
             DisplayPlayerHand();

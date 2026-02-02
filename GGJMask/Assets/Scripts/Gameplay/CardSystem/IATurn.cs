@@ -7,5 +7,12 @@ namespace Gameplay.CardSystem
         public Hand HandPlayer { get; set;}
         public Hand HandDefence { get; set;}
         public Hand HandAttack { get; set;}
+
+        public int Health; 
+        
+        public int MaxHealth;
+        
+        
+        
     }
 }
