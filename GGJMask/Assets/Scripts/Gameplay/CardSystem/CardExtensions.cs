@@ -114,92 +114,34 @@ namespace Gameplay.CardSystem
         }
         
         
-         public void TransferSelectedToAttack(List<CardUI> selectedUIs)
+         public static void TransferToAttack(CardPlayer cardPlayer , GameMetrics gameMetrics)
         {
-            if (selectedUIs == null || selectedUIs.Count == 0) return;
-
-            var handCards = CardLocalPlayer.HandPlayer.GetCards();
-
-            List<int> indices = new List<int>();
-            foreach (var ui in selectedUIs)
+            for (int i = 0; i < gameMetrics.AttackSize; i++)
             {
-                if (ui == null || ui.CurrentCard == null)
+                if (cardPlayer.MainHand.Count == 0)
                 {
-                    Debug.LogWarning("Selected CardUI invalide ");
-                    continue;
+                    Debug.LogWarning("Plus de cartes dans la main pour transférer en défense");
+                    break;
                 }
 
-                int idx = handCards.IndexOf(ui.CurrentCard);
-                if (idx >= 0)
-                    indices.Add(idx);
-                else
-                    Debug.LogWarning("La carte sélectionnée n'est pas trouvée dans la main ");
+                ICard card = cardPlayer.MainHand.RemoveCardAtIndex(0); 
+                cardPlayer.HandAttack.AddCard(card);
             }
-
-            indices.Sort((a, b) => b.CompareTo(a));
-
-            foreach (int idx in indices)
-            {
-                ICard card = CardLocalPlayer.HandPlayer.RemoveCardAtIndex(idx);
-                if (card != null)
-                {
-                    bool success = CardLocalPlayer.HandAttack.AddCard(card);
-                    if (!success)
-                    {
-                        Debug.LogWarning("Echec ajout en attaque, remise dans la main");
-                        CardLocalPlayer.HandPlayer.AddCard(card);
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning($"Aucune carte à l'index {idx} lors du transfert en attaque");
-                }
-            }
-            
         }
-        public void TransferSelectedToDefense(List<CardUI> selectedUIs)
+
+        public static void TransferToDefense(CardPlayer cardPlayer, GameMetrics gameMetrics)
         {
-            if (selectedUIs == null || selectedUIs.Count == 0) return;
-
-            var handCards = CardLocalPlayer.HandPlayer.GetCards();
-
-            List<int> indices = new List<int>();
-            foreach (var ui in selectedUIs)
+            for (int i = 0; i < gameMetrics.DefenseSize; i++)
             {
-                if (ui == null || ui.CurrentCard == null)
+                if (cardPlayer.MainHand.Count == 0)
                 {
-                    Debug.LogWarning("Selected CardUI invalide (null) — ignorée.");
-                    continue;
+                    Debug.LogWarning("Plus de cartes dans la main pour transférer en défense");
+                    break;
                 }
 
-                int idx = handCards.IndexOf(ui.CurrentCard);
-                if (idx >= 0)
-                    indices.Add(idx);
-                else
-                    Debug.LogWarning("La carte sélectionnée n'est pas trouvée dans la main (ignorée).");
+                ICard card = cardPlayer.MainHand.RemoveCardAtIndex(0);
+                cardPlayer.HandDefence.AddCard(card);
             }
-
-            indices.Sort((a, b) => b.CompareTo(a));
-
-            foreach (int idx in indices)
-            {
-                ICard card = CardLocalPlayer.HandPlayer.RemoveCardAtIndex(idx);
-                if (card != null)
-                {
-                    bool success = CardLocalPlayer.HandDefence.AddCard(card);
-                    if (!success)
-                    {
-                        Debug.LogWarning("Echec ajout en défense, remise dans la main");
-                        CardLocalPlayer.HandPlayer.AddCard(card);
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning($"Aucune carte à l'index {idx} lors du transfert en défense");
-                }
-            }
-
-            
         }
         
         
