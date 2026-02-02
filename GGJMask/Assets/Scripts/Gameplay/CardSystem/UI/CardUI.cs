@@ -107,8 +107,8 @@ namespace Gameplay.CardSystem.UI
             {
                 selectionOverlay.enabled = true;
                 selectionOverlay.color = type == Gameplay.CardSystem.SelectionType.Attack
-                    ? new Color(1f, 0f, 0f, 0.5f)  // Rouge pour attaque
-                    : new Color(0f, 0f, 1f, 0.5f); // Bleu pour défense (si ajouté)
+                    ? new Color(1f, 0f, 0f, 0.5f)  
+                    : new Color(0f, 0f, 1f, 0.5f); 
             }
         }
 

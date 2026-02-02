@@ -10,6 +10,7 @@ namespace Gameplay.CardSystem
 {
     public static class CardExtensions
     {
+        
         /*
         public CardLocalPlayer CardLocalPlayer { get; set; }
         public AICardPlayer AICardPlayer { get; set; }
@@ -143,13 +144,13 @@ namespace Gameplay.CardSystem
                 cardPlayer.HandDefence.AddCard(card);
             }
         }
-        
-        
-        
-        
-        
-        
-        /*
+
+
+
+
+        #region UI
+
+         /*
         private void DisplayPlayerHand()
         {
             if (playerHandcontainer != null)
@@ -289,6 +290,10 @@ namespace Gameplay.CardSystem
         }
         */
 
+
+        #endregion
+        
+       
        
         
 

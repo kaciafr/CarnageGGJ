@@ -10,8 +10,6 @@ public class CameraViewer : MonoBehaviour
 
     private void Start()
     {
-        Buttoncam.onClick.AddListener(() => SwitchToCamera(cam));
-        Buttoncam2.onClick.AddListener(() => SwitchToCamera(cam2));
 
         SwitchToCamera(cam);
     }

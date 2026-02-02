@@ -1,5 +1,4 @@
 using System.Collections;
-using Gameplay.CardSystem.Collections;
 
 namespace Gameplay.CardSystem
 {

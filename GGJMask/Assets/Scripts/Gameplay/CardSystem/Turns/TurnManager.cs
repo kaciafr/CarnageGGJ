@@ -13,7 +13,10 @@ public class TurnManager : MonoBehaviour
     public event Action OnSetupPhase;
     public event Action OnPlayPhase;
     public event Action OnResolutionPhase;
-    
+
+    public event Action OnTurnChanged;
+    public event Action<CardPlayer> OnGameOver; 
+    public event Action OnGameStarted;
     [SerializeField]
     private CardPlayer[] cardPlayers;
 
@@ -26,6 +29,9 @@ public class TurnManager : MonoBehaviour
     
     public Deck Deck { get; private set; }
     
+    private int firstAttackerIndex = 0;
+
+    
     private void Awake()
     {
         River = new River();
@@ -35,16 +41,21 @@ public class TurnManager : MonoBehaviour
     private IEnumerator PlayCardGame()
     {
         //TODO : Apprendre les extensions a Kaci
-        
+        OnGameStarted?.Invoke();
         Deck.FillCollectionWithAllCards(metrics);
         Deck.Shuffle();
         
+        
+        firstAttackerIndex = 0;
+
         for (int i = 0; i < cardPlayers.Length; i++)
             cardPlayers[i].PrepareForGame(this);
+       
         int losingPlayer = -1;
-        while (HasAnyPlayerLost(out losingPlayer))
+        while (!HasAnyPlayerLost(out losingPlayer))
         {
             CurrentTurn++;
+            OnTurnChanged?.Invoke();
 
             //River fill
             OnSetupPhase?.Invoke();
@@ -74,15 +85,27 @@ public class TurnManager : MonoBehaviour
             {
                 CardPlayer player = cardPlayers[i];
                 int damage = River.GetCollectionDamage(player.HandAttack, metrics);
+                Debug.Log($"Joueur {i} calcule {damage} dégâts");
 
                 for (int j = 0; j < cardPlayers.Length; j++)
                 {
                     //Ne pas se tuer soit meme
                     if (j != i)
+                        Debug.Log($" Joueur {i} → Joueur {j} : {damage} dégâts");
                         cardPlayers[j].TakeDamage(damage);
+                        Debug.Log($" Joueur {j} : {cardPlayers[j].CurrentHealth} PV");
+
                 }
             }
         }
+
+        for (int i = 0; i < cardPlayers.Length; i++)
+        {
+            cardPlayers[i].HandAttack.Clear();
+            cardPlayers[i].HandDefence.Clear();
+        }
+        
+        OnGameOver?.Invoke(cardPlayers[losingPlayer]);
         
         Debug.Log($"Game Over for {losingPlayer}");
         //Des trucs
