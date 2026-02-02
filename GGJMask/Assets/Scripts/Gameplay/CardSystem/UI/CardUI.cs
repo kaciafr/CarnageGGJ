@@ -21,7 +21,6 @@ namespace Gameplay.CardSystem.UI
         public bool IsSelected { get; private set; }
         public Gameplay.CardSystem.SelectionType SelectionType { get; private set; }
 
-        // Index correspondant à la position dans la main (0..Count-1)
         public int CardIndex { get; private set; }
 
         public void Initialize(Gameplay.CardSystem.SelectionManager manager)

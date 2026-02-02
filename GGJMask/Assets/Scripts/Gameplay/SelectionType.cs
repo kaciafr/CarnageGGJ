@@ -1,4 +1,4 @@
-namespace Gameplay
+namespace Gameplay.CardSystem
 {
     public enum SelectionType
     {
