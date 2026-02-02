@@ -8,7 +8,7 @@ namespace Gameplay.CardSystem
 
     public class SelectionManager : MonoBehaviour
     {
-        [FormerlySerializedAs("GameManagerRef")] public UtilitiesCards utilitiesCardsRef;
+        [FormerlySerializedAs("GameManagerRef")] public CardExtensions CardExtensionsRef;
 
         private SelectionType currentSelectionMode = SelectionType.None;
 
@@ -21,9 +21,9 @@ namespace Gameplay.CardSystem
 
         private void Start()
         {
-            if (utilitiesCardsRef == null)
+            if (CardExtensionsRef == null)
             {
-                utilitiesCardsRef = FindObjectOfType<UtilitiesCards>();
+                CardExtensionsRef = FindObjectOfType<CardExtensions>();
             }
         }
 
@@ -69,7 +69,7 @@ namespace Gameplay.CardSystem
 
         public void ConfirmTransferToAttack()
         {
-            if (utilitiesCardsRef == null)
+            if (CardExtensionsRef == null)
             {
                 Debug.LogWarning("GameManagerRef non assigné dans SelectionManager.");
                 return;
@@ -78,13 +78,13 @@ namespace Gameplay.CardSystem
             var sel = GetSelectedCardUIs();
             if (sel.Count == 0) return;
 
-            utilitiesCardsRef.TransferSelectedToAttack(sel);
+            CardExtensionsRef.TransferSelectedToAttack(sel);
             ClearSelection();
         }
 
         public void ConfirmTransferToDefense()
         {
-            if (utilitiesCardsRef == null)
+            if (CardExtensionsRef == null)
             {
                 Debug.LogWarning("GameManagerRef non assigné dans SelectionManager.");
                 return;
@@ -93,7 +93,7 @@ namespace Gameplay.CardSystem
             var sel = GetSelectedCardUIs();
             if (sel.Count == 0) return;
 
-            utilitiesCardsRef.TransferSelectedToDefense(sel);
+            CardExtensionsRef.TransferSelectedToDefense(sel);
             ClearSelection();
         }
 
