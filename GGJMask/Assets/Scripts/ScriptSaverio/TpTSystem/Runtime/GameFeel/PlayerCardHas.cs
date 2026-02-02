@@ -15,6 +15,7 @@ namespace RunTime.TpTSystem
         [SerializeField] private List<Transform> handCardsSlots;
         [SerializeField] private List<Transform> bankCardsSlots;
         [SerializeField] private List<Transform> allSlots;
+        private Vector3[] corners = new Vector3[4];
         
         
         [SerializeField] private int maxSlotHand = 5;
@@ -72,11 +73,29 @@ namespace RunTime.TpTSystem
 
         private void Update()
         {
-            if (isCrossing)return;
+            if (isCrossing)
+                return;
+            
+            if(selectedCard == null)
+                return;
+            
             for (int i = 0; i < cards.Count; i++)
             {
+                var cardTransform = cards[i].transform;
+                
+                RectTransform rectTransform = (RectTransform)cardTransform;
+                rectTransform.GetWorldCorners(corners);
+                
+                float yMin = corners[0].y;
+                float yMax = corners[1].y;
 
-                if (selectedCard.transform.position.x > cards[i].transform.position.x)
+                Vector3 selectedCardPosition = selectedCard.transform.position;
+               // Debug.Log($"{selectedCardPosition}, {yMin}, {yMax}");
+                if (selectedCardPosition.y < yMin || selectedCardPosition.y > yMax)
+                    continue;
+
+
+                if (selectedCardPosition.x > cardTransform.position.x)
                 {
                     if (selectedCard.ParentIndex() < cards[i].ParentIndex())
                     {
@@ -86,17 +105,15 @@ namespace RunTime.TpTSystem
                     }
                 }
 
-                if (selectedCard.transform.position.x < cards[i].transform.position.x)
+                if (selectedCardPosition.x < cardTransform.position.x)
                 {
                     if (selectedCard.ParentIndex() > cards[i].ParentIndex())
                     {
                         originalSlot.ClearCard();
-                        
                         Swap(i);
                         break;
                     }
                 }
-
             }
         }
 
@@ -152,8 +169,9 @@ namespace RunTime.TpTSystem
             cards[index].transform.DOLocalMove(cards[index].selected ? new Vector3(0, cards[index].selectionOffset, 0) : Vector3.zero, 0.12f).SetEase(Ease.OutBack);
 
             selectedCard.transform.SetParent(crossedParent);
+            /*
             selectedCard.transform.DOLocalMove(selectedCard.selected ? new Vector3(0, selectedCard.selectionOffset, 0) : Vector3.zero, 0.12f).SetEase(Ease.OutBack);
-            
+            */
 
             isCrossing = false;
         }
