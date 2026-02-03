@@ -4,6 +4,7 @@ using Gameplay.CardSystem.Collections;
 using Gameplay.CardSystem.PointCards;
 using Gameplay.CardSystem.SpecialCards;
 using Gameplay.CardSystem.UI;
+using Masque;
 using UnityEngine;
 
 namespace Gameplay.CardSystem
@@ -12,14 +13,13 @@ namespace Gameplay.CardSystem
     {
         public PlayerTurn PlayerTurn { get; set; }
         public IATurn IaTurn { get; set; }
-
         public River River { get; set; }
 
         [SerializeField] private ScoreCardLibrary scoreCardLibrary;
         [SerializeField] private SpecialCardData specialCardsData;
         [SerializeField] private int handSize = 5;
-        [SerializeField] private int attackSize = 3;
-        [SerializeField] private int defenseSize = 2;
+        [SerializeField] public int attackSize = 3;
+        [SerializeField] public int defenseSize = 2;
         [SerializeField] private int riverSize = 5;
         [SerializeField] private int numberSpecial = 2;
         
@@ -32,9 +32,13 @@ namespace Gameplay.CardSystem
         [SerializeField] private GameObject cardPrefab;
         [SerializeField] private SelectionManager selectionManager;
         
-     
+        
+        //----------------    SAVERIO    --------------\\
+        [SerializeField] private MaskManager maskManager;
+        //----------------    SAVERIO    --------------\\
+        
 
-        private List<CardUI> playerCardUI = new List<CardUI>();
+        public List<CardUI> playerCardUI = new List<CardUI>();
         
         public static UtilitiesCards instance { get; private set; }
 
@@ -52,6 +56,8 @@ namespace Gameplay.CardSystem
 
         private void Start()
         {
+            maskManager.EquipMask(maskManager.currentMask);
+            
             StartInitialize();
         }
 
@@ -86,7 +92,7 @@ namespace Gameplay.CardSystem
         }
         
 
-        private void DisplayPlayerHand()
+        public void DisplayPlayerHand()
         {
             if (playerHandcontainer != null)
             {
@@ -171,7 +177,7 @@ namespace Gameplay.CardSystem
             }
         }
 
-        private void DisplayDefense()
+        public void DisplayDefense()
         {
             if (playerDefensecontainer != null)
             {
@@ -338,13 +344,5 @@ namespace Gameplay.CardSystem
             DisplayDefense();
             if (selectionManager != null) selectionManager.ClearSelection();
         }
-        
-        
-
-
-
-      
- 
     }
-    
 }
