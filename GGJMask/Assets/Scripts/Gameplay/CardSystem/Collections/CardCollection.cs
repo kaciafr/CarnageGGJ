@@ -6,8 +6,8 @@ namespace Gameplay.CardSystem.Collections
 {
     public class CardCollection
     {
-        public event Action<ICard> CardAdded;
-        public event Action<ICard> CardRemoved;
+        public event Action<ICard> OnCardAdded;
+        public event Action<ICard> OnCardRemoved;
 
         protected readonly List<ICard> cards = new ();
         public IReadOnlyList<ICard> Cards => cards;
@@ -19,7 +19,7 @@ namespace Gameplay.CardSystem.Collections
             if (!cards.Contains(card))
             {
                 cards.Add(card);
-                CardAdded?.Invoke(card);
+                OnCardAdded?.Invoke(card);
                 return true;
             }
 
@@ -30,7 +30,7 @@ namespace Gameplay.CardSystem.Collections
         {
             if (cards.Remove(card))
             {
-                CardRemoved?.Invoke(card);
+                OnCardRemoved?.Invoke(card);
                 return true;
             }
 
