@@ -6,6 +6,7 @@ namespace Gameplay.CardSystem
     {
         public override void BeginTurn(TurnManager manager)
         {
+            base.BeginTurn(manager);
             for (int i = 0; i < manager.Metrics.AttackSize; i++)
             {
                 var card = MainHand.GetCard(0);
@@ -22,7 +23,6 @@ namespace Gameplay.CardSystem
             }
             
             SetIsDone();
-            base.BeginTurn(manager);
         }
     }
 }

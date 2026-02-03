@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 7.2, y: -5.7}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9061299906009576238
@@ -425,7 +425,7 @@ MonoBehaviour:
   scoreText: {fileID: 9128988723985482118}
   rotateSpeedLimit: 1
   rotateBreakLimit: 2
-  cardMovementSpeed: 0
+  cardMovementSpeed: 21
   shadow: {fileID: 1331700572778218109}
   shake: 10
   scale: 1.2

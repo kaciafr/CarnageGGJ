@@ -53,9 +53,12 @@ public class TurnManager : MonoBehaviour
             cardPlayers[i].PrepareForGame(this);
        
         int losingPlayer = -1;
+        yield return new WaitForSeconds(1);
         while (!HasAnyPlayerLost(out losingPlayer))
         {
             CurrentTurn++;
+            Debug.Log($"Beginning turn {CurrentTurn}");
+            
             OnTurnChanged?.Invoke();
 
             //River fill
@@ -71,6 +74,9 @@ public class TurnManager : MonoBehaviour
             OnPlayPhase?.Invoke();
             //Player turns
             for (var i = 0; i < cardPlayers.Length; i++)
+                cardPlayers[i].PrepareTurn(this);
+            
+            for (var i = 0; i < cardPlayers.Length; i++)
             {
                 CurrentTurnPlayer = cardPlayers[i];
 
@@ -80,8 +86,11 @@ public class TurnManager : MonoBehaviour
                     yield return null;
             
                 CurrentTurnPlayer.EndTurn(this);
+                yield return new WaitForSeconds(.5f);
             }
             
+            yield return new WaitForSeconds(1.5f);
+            Debug.Log("Resolution");
             OnResolutionPhase?.Invoke();
             //Resolution
             for (int i = 0; i < cardPlayers.Length; i++)
@@ -99,9 +108,14 @@ public class TurnManager : MonoBehaviour
                         cardPlayers[j].TakeDamage(damage);
                         Debug.Log($" Joueur {j} : {cardPlayers[j].CurrentHealth} PV");
                     }
-
+                    
+                    yield return new WaitForSeconds(.5f);
                 }
+                
+                player.HandAttack.Clear();
             }
+            
+            yield return new WaitForSeconds(1.5f);
         }
 
         for (int i = 0; i < cardPlayers.Length; i++)

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f0ce89aa1c4c41892ce436e7da680b, type: 3}
   m_Name: Score Card Library
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.CardSystem.PointCards.ScoreCardLibrary
-  <UIPrefab>k__BackingField: {fileID: 3564719285414020303, guid: 8f77d213a864a304caf67e18a46747ee, type: 3}
+  <UIPrefab>k__BackingField: {fileID: 4587343242975114039, guid: c839f1c53f4ba934bb65d6d2210a5bec, type: 3}
   <Colors>k__BackingField:
   - <Suit>k__BackingField: 0
-    <Color>k__BackingField: {r: 0.67295593, g: 0, b: 0, a: 0}
+    <Color>k__BackingField: {r: 0.67295593, g: 0, b: 0, a: 1}
   - <Suit>k__BackingField: 1
-    <Color>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
+    <Color>k__BackingField: {r: 0, g: 0, b: 0, a: 1}
   - <Suit>k__BackingField: 3
-    <Color>k__BackingField: {r: 0, g: 0.30714616, b: 0.9748427, a: 0}
+    <Color>k__BackingField: {r: 0, g: 0.30714616, b: 0.9748427, a: 1}
   - <Suit>k__BackingField: 2
-    <Color>k__BackingField: {r: 0.08981118, g: 0.70440245, b: 0, a: 0}
+    <Color>k__BackingField: {r: 0.08981118, g: 0.70440245, b: 0, a: 1}
   <CardValueInfos>k__BackingField:
   - <Value>k__BackingField: 1
     <Score>k__BackingField: 5

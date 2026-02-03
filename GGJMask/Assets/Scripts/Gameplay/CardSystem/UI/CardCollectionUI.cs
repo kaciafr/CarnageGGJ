@@ -30,6 +30,7 @@ namespace RunTime.TpTSystem
 
         private void Awake()
         {
+            Cards = new List<CardUI>();
             foreach (Transform t in slotContainer)
             {
                 Destroy(t.gameObject);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Gameplay.CardSystem.UI
@@ -21,6 +22,8 @@ namespace Gameplay.CardSystem.UI
             
             cardUI = Instantiate(cardUIPrefab, transform);
             cardUI.transform.localPosition = Vector3.zero;
+            cardUIDictionary.Add(card, cardUI);
+            
             cardUI.Connect(card);
             return true;
         }
@@ -35,7 +38,9 @@ namespace Gameplay.CardSystem.UI
                 {
                     cardUIDictionary.Remove(card);
                     ui.Disconnect();
-                    Destroy(ui.gameObject);
+
+                    ui.transform.DOScale(0, .2f)
+                        .OnComplete(() => Destroy(ui.gameObject));
                 }
             }
         }

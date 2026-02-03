@@ -91,12 +91,13 @@ namespace Gameplay.CardSystem.UI
             Vector3 lerpPosition = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * cardMovementSpeed);
             
             Vector3 direction = lerpPosition - transform.position;
-            
+            /*
             float mouseX = direction.x / rotateBreakLimit;
             angleY += mouseX * rotateSpeedLimit;
             angleY = Mathf.Clamp(angleY, -20, 20);
 				
             transform.rotation = Quaternion.Euler(0, 0, angleY);
+            */
             transform.position = lerpPosition;
         }
 
@@ -123,7 +124,7 @@ namespace Gameplay.CardSystem.UI
         {
             if(CollectionUI == null || !CollectionUI.CanInteract)
                 return;
-            DraggedPosition = eventData.pointerPressRaycast.worldPosition;
+            DraggedPosition = eventData.position;
             if(CollectionUI)
                 CollectionUI.ProcessCardDrag(this);
         }
@@ -165,14 +166,12 @@ namespace Gameplay.CardSystem.UI
             if (IsSelected)
             {
                 transform.DOKill();
-                transform.localPosition += transform.up * 90;
-                shadow.transform.localPosition -= transform.up * 70;
+                transform.DOScale(Vector3.one * 1.15f, .25f).SetEase(Ease.OutQuad);
             }
             else
             {
                 transform.DOKill();
-                transform.localPosition = Vector3.zero;
-                shadow.transform.localPosition = Vector3.zero;
+                transform.DOScale(Vector3.one, .25f).SetEase(Ease.OutQuad);
             }
         }
     }

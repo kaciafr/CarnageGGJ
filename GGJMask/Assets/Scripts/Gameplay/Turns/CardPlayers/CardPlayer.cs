@@ -21,10 +21,9 @@ namespace Gameplay.CardSystem
         
         public bool IsDone { get; private set; }
 
-        public virtual void BeginTurn(TurnManager manager)
+        public virtual void PrepareTurn(TurnManager manager)
         {
-            IsDone = false;
-            int cardToDraw = manager.CurrentTurn == 0 ? manager.Metrics.HandSize : manager.Metrics.AttackSize;
+            int cardToDraw = manager.CurrentTurn == 1 ? manager.Metrics.HandSize : manager.Metrics.AttackSize;
             
             HandDefense.TransferAll(MainHand);
             HandAttack.TransferAll(MainHand);
@@ -33,6 +32,10 @@ namespace Gameplay.CardSystem
                 ICard card = manager.Deck.DrawCard();
                 MainHand.AddCard(card);
             }
+        }
+        public virtual void BeginTurn(TurnManager manager)
+        {
+            IsDone = false;
             
             OnBeginTurn?.Invoke();
         }
