@@ -10,53 +10,7 @@ namespace Gameplay.CardSystem
     public static class CardExtensions
     {
 
-        /*
-        public CardLocalPlayer CardLocalPlayer { get; set; }
-        public AICardPlayer AICardPlayer { get; set; }
-        public River River { get; set; }
-
-        [SerializeField] private ScoreCardLibrary scoreCardLibrary;
-        [SerializeField] private SpecialCardData specialCardsData;
-        [SerializeField] private int handSize = 5;
-        [SerializeField] private int attackSize = 3;
-        [SerializeField] private int defenseSize = 2;
-        [SerializeField] private int riverSize = 5;
-        [SerializeField] private int numberSpecial = 2;
-
-
-        private Deck maindeck;
-        [SerializeField] private Transform playerHandcontainer;
-        [SerializeField] private Transform playerAttackcontainer;
-        [SerializeField] private Transform playerDefensecontainer;
-        [SerializeField] private Transform playerRiver;
-        [SerializeField] private GameObject cardPrefab;
-        [SerializeField] private SelectionManager selectionManager;
-
-
-
-        private List<CardUI> playerCardUI = new List<CardUI>();
-
-        public static UtilitiesCards instance { get; private set; }
-
-
-        private void Awake()
-        {
-            if (instance != null)
-            {
-                return;
-            }
-
-            instance = this;
-        }
-
-
-        private void Start()
-        {
-            StartInitialize();
-        }
-        */
-
-
+        
         public static int GetCollectionDamage(this CardCollection river, CardCollection collection, GameMetrics metrics)
         {
             int totalDamage = 0;
@@ -68,6 +22,8 @@ namespace Gameplay.CardSystem
 
             return totalDamage;
         }
+
+        
 
         private static int GetDamageForSuit(CardSuit suit, GameMetrics metrics, params CardCollection[] collections)
         {

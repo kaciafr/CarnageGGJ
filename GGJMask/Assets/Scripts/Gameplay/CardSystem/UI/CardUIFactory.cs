@@ -17,16 +17,24 @@ namespace Gameplay.CardSystem.UI
 
         public bool TryGetCardUI(ICard card, out CardUI cardUI)
         {
+            if (card == null)
+            {
+                Debug.LogError("TryGetCardUI: card parameter is null!");
+                cardUI = null;
+                return false;
+            }
+
             if(cardUIDictionary.TryGetValue(card, out cardUI))
                 return true;
-            
+
             cardUI = Instantiate(cardUIPrefab, transform);
             cardUI.transform.localPosition = Vector3.zero;
             cardUIDictionary.Add(card, cardUI);
-            
+
             cardUI.Connect(card);
             return true;
         }
+
 
         private void Update()
         {

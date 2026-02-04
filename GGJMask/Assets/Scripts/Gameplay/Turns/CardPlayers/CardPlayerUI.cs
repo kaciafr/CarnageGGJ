@@ -19,30 +19,39 @@ namespace Gameplay.CardSystem
         private CardCollectionUI attackUI;
         [SerializeField]
         private CanvasGroup canvasGroup;
-        
-        // Health UI 
+        [SerializeField]
+        private Canvas canvas;
+
+        [SerializeField] private TMP_Text damageText;
+        [SerializeField] private TMP_Text comboText;
+        [SerializeField] private TMP_Text moneText;
         [SerializeField] private TMP_Text healthText;
-        
+
         private CardPlayer currentPlayer;
         private TurnManager currentTurnManager;
-        
-        
-        
+
         public void Connect(TurnManager turnManager, CardPlayer cardPlayer)
         {
             if(currentPlayer != null)
                 Disconnect();
-            
+
             currentTurnManager = turnManager;
             currentPlayer = cardPlayer;
-            
+
             bool isRealPlayer = cardPlayer is CardLocalPlayer;
 
             currentPlayer.OnBeginTurn += OnNewTurnBegins;
             currentPlayer.OnEndTurn += OnNewTurnEnds;
+            currentPlayer.OnChangeHealth += OnHealthChanged;
+            currentPlayer.OnChangedDamage += OnDamageChanged;
+            currentPlayer.OnChangedMoney += OnMoneyChanged;
 
-            currentPlayer.OnChangeHealth += OnHealthChanged; 
-            
+            if (currentTurnManager != null)
+            {
+                currentTurnManager.OnDesactivateCanvas += DeactivateCanvas;
+                currentTurnManager.OnGameStarted += ActivateCanvas;
+            }
+
             canvasGroup.blocksRaycasts = isRealPlayer;
 
             if (handUI != null)
@@ -62,31 +71,79 @@ namespace Gameplay.CardSystem
                 attackUI.CanInteract = isRealPlayer;   
                 attackUI.Connect(cardPlayer.HandAttack);
             }
-            UpdateHealthDisplay(currentPlayer.CurrentHealth);
 
+            UpdateHealthDisplay(currentPlayer.CurrentHealth);
+            UpdateDamageDisplay();
+            UpdateMoneyDisplay();
         }
 
-      
+        private void OnDamageChanged()
+        {
+            UpdateDamageDisplay();
+        }
+
+        private void OnMoneyChanged()
+        {
+            UpdateMoneyDisplay();
+        }
+
+      private void UpdateDamageDisplay()
+{
+    if (currentPlayer == null || currentTurnManager == null)
+        return;
+
+    int totalDamage = currentTurnManager.River.GetCollectionDamage(
+        currentPlayer.HandAttack,  
+        currentTurnManager.Metrics
+    );
+
+    if (damageText != null)
+        damageText.text = $"Dégâts: {totalDamage}";
+
+    if (comboText != null)
+    {
+        
+        comboText.text = $"Combo: 0";
+    }
+
+    Debug.Log($"[{currentPlayer.gameObject.name}] Dégâts calculés: {totalDamage}");
+}
+
+
+        private void UpdateMoneyDisplay()
+        {
+            if (currentPlayer == null) return;
+
+            if (moneText != null)
+                moneText.text = $"Argent: {currentPlayer.CurrentMoney}$";
+        }
 
         public void Disconnect()
         {
             currentPlayer.OnBeginTurn -= OnNewTurnBegins;
             currentPlayer.OnEndTurn -= OnNewTurnEnds;
+            currentPlayer.OnChangeHealth -= OnHealthChanged;
+            currentPlayer.OnChangedDamage -= OnDamageChanged;
+            currentPlayer.OnChangedMoney -= OnMoneyChanged;
+
+            if (currentTurnManager != null)
+            {
+                currentTurnManager.OnDesactivateCanvas -= DeactivateCanvas;
+                currentTurnManager.OnGameStarted -= ActivateCanvas;
+            }
 
             if(handUI != null)
                 handUI.Disconnect();
-            
+
             if(defenseUI != null)
                 defenseUI.Disconnect();
-            
+
             if(attackUI != null)
                 attackUI.Disconnect();
-            
+
             currentTurnManager = null;
             currentPlayer = null;
         }
-
-      
 
         public bool CanEndTurn()
         {
@@ -96,10 +153,10 @@ namespace Gameplay.CardSystem
                 if(cardUI.IsSelected)
                     selectedCards++;
             }
-            
+
             return selectedCards == currentTurnManager.Metrics.AttackSize;
         }
-        
+
         public void EndTurn()
         {
             using (ListPool<CardUI>.Get(out var cardUIs))
@@ -113,7 +170,7 @@ namespace Gameplay.CardSystem
                         cardUI.CurrentCard.Transfer(handUI.Collection, defenseUI.Collection);
                 }
             }
-            
+
             currentPlayer.SetIsDone();
         }
 
@@ -124,15 +181,13 @@ namespace Gameplay.CardSystem
         private void OnNewTurnEnds()
         {
         }
-        
+
         private void UpdateHealthDisplay(int hp)
         {
             if (healthText != null)
                 healthText.text = $"Pv: {hp}";
-            
         }
-        
-        
+
         private void OnHealthChanged(int newHp, int delta)
         {
             int maxHp = (currentPlayer != null) ? currentPlayer.MaxHealth : 0;
@@ -142,6 +197,31 @@ namespace Gameplay.CardSystem
                 healthText.text = $"Pv: {newHp}";
         }
 
+        private void DeactivateCanvas()
+        {
+            if (canvas != null)
+            {
+                canvas.enabled = false;
+            }
+        }
 
+        private void ActivateCanvas()
+        {
+            if (canvas != null)
+            {
+                canvas.enabled = true;
+            }
+        }
+        
+        public void ShowDamageDealt(int damage)
+        {
+            damageText.gameObject.SetActive(true);  
+            damageText.text = $"Dégâts: {damage}";
+        }
+
+        public void HideDamageText()
+        {
+            damageText.gameObject.SetActive(false);  
+        }
     }
 }

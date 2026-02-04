@@ -12,9 +12,7 @@ namespace Gameplay.CardSystem.PointCards
             infos.Score : 
             0;
         
-        public Sprite Icon => Library.TryGetValueInfos(Value, out var infos ) ?
-            infos.Icon :
-            null;
+       
         
         public Color Color => Library.TryGetColorForSuit(Suit, out var color ) ? 
             color :

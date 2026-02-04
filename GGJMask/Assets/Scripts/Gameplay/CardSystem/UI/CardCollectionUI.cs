@@ -114,5 +114,20 @@ namespace RunTime.TpTSystem
                     draggedSlot.SetSiblingIndex(cardUISlotIndex);
             }
         }
+        
+        public int GetSelectedCardsCount()
+        {
+            int count = 0;
+    
+            foreach (CardUI cardUI in Cards)
+            {
+                if (cardUI != null && cardUI.IsSelected)
+                {
+                    count++;
+                }
+            }
+    
+            return count;
+        }
     }
 }

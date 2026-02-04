@@ -46,6 +46,7 @@ namespace Gameplay.CardSystem.UI
         public Vector3 DraggedPosition { get; private set; }
         
         public CardCollectionUI CollectionUI { get; private set; }
+        
 
         private float angleY;
         public void Connect(ICard card)
@@ -54,7 +55,6 @@ namespace Gameplay.CardSystem.UI
                 Disconnect();
             
             CurrentCard = card;
-            icon.sprite = card.Icon;
             switch (card)
             {
                 case ScoreCard pointCard:
@@ -91,13 +91,7 @@ namespace Gameplay.CardSystem.UI
             Vector3 lerpPosition = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * cardMovementSpeed);
             
             Vector3 direction = lerpPosition - transform.position;
-            /*
-            float mouseX = direction.x / rotateBreakLimit;
-            angleY += mouseX * rotateSpeedLimit;
-            angleY = Mathf.Clamp(angleY, -20, 20);
-				
-            transform.rotation = Quaternion.Euler(0, 0, angleY);
-            */
+            
             transform.position = lerpPosition;
         }
 
@@ -160,9 +154,20 @@ namespace Gameplay.CardSystem.UI
         {
             if(CollectionUI == null || !CollectionUI.CanInteract)
                 return;
-            
+
+            if (!IsSelected)
+            {
+                int selectedCount = CollectionUI.GetSelectedCardsCount();
+        
+                if (selectedCount >= 3)
+                {
+                    Debug.Log("❌ Maximum 3 cartes sélectionnées !");
+                    return;
+                }
+            }
+
             IsSelected = !IsSelected;
-            
+
             if (IsSelected)
             {
                 transform.DOKill();

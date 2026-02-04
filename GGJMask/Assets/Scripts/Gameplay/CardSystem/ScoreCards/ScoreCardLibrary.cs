@@ -22,8 +22,6 @@ namespace Gameplay.CardSystem.PointCards
             public CardValue Value { get; private set; }
             [field: SerializeField, Range(0, 5)]
             public int Score { get; private set; }
-            [field: SerializeField]
-            public Sprite Icon { get; private set; }
         }
 
         [field: SerializeField]
