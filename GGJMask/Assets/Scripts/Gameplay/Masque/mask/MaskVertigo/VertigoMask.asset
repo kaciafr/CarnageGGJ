@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe43eb51baa04b2c982e5c83d3dcabde, type: 3}
   m_Name: VertigoMask
   m_EditorClassIdentifier: Assembly-CSharp::Masque.MaskData
+  ID: 2
   Name: Vertigo
+  Description: 
+  Icon: {fileID: 21300000, guid: 72123e9615655384e9ebdb6094d09f74, type: 3}
   Prefab: {fileID: 0}
+  UI: {fileID: 0}
   Effect: {fileID: 11400000, guid: 0b1a1cb688dfeb04caa73fe3890a31aa, type: 2}
