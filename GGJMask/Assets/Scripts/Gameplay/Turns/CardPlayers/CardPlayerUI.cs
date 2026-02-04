@@ -1,8 +1,11 @@
+using DG.Tweening;
 using Gameplay.CardSystem.Turns;
 using Gameplay.CardSystem.UI;
 using RunTime.TpTSystem;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UI;
 
 namespace Gameplay.CardSystem
 {
@@ -17,8 +20,13 @@ namespace Gameplay.CardSystem
         [SerializeField]
         private CanvasGroup canvasGroup;
         
+        // Health UI 
+        [SerializeField] private TMP_Text healthText;
+        
         private CardPlayer currentPlayer;
         private TurnManager currentTurnManager;
+        
+        
         
         public void Connect(TurnManager turnManager, CardPlayer cardPlayer)
         {
@@ -32,6 +40,8 @@ namespace Gameplay.CardSystem
 
             currentPlayer.OnBeginTurn += OnNewTurnBegins;
             currentPlayer.OnEndTurn += OnNewTurnEnds;
+
+            currentPlayer.OnChangeHealth += OnHealthChanged; 
             
             canvasGroup.blocksRaycasts = isRealPlayer;
 
@@ -52,7 +62,11 @@ namespace Gameplay.CardSystem
                 attackUI.CanInteract = isRealPlayer;   
                 attackUI.Connect(cardPlayer.HandAttack);
             }
+            UpdateHealthDisplay(currentPlayer.CurrentHealth);
+
         }
+
+      
 
         public void Disconnect()
         {
@@ -71,6 +85,8 @@ namespace Gameplay.CardSystem
             currentTurnManager = null;
             currentPlayer = null;
         }
+
+      
 
         public bool CanEndTurn()
         {
@@ -108,6 +124,24 @@ namespace Gameplay.CardSystem
         private void OnNewTurnEnds()
         {
         }
+        
+        private void UpdateHealthDisplay(int hp)
+        {
+            if (healthText != null)
+                healthText.text = $"Pv: {hp}";
+            
+        }
+        
+        
+        private void OnHealthChanged(int newHp, int delta)
+        {
+            int maxHp = (currentPlayer != null) ? currentPlayer.MaxHealth : 0;
+            Debug.Log($"[CardPlayerUI] OnHealthChanged newHp={newHp}, delta={delta}, maxHp={maxHp}");
+
+            if (healthText != null)
+                healthText.text = $"Pv: {newHp}";
+        }
+
 
     }
 }

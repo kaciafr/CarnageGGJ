@@ -10,6 +10,8 @@ namespace Gameplay.CardSystem
     {
         public event Action OnBeginTurn;
         public event Action OnEndTurn;
+
+        public event Action<int , int > OnChangeHealth; 
         public Hand MainHand { get; private set;}
         public Hand HandDefense { get; private set;}
         public Hand HandAttack { get; private set;}
@@ -55,16 +57,22 @@ namespace Gameplay.CardSystem
             HandAttack = new Hand();
             
             CurrentHealth = MaxHealth;
+            OnChangeHealth?.Invoke(CurrentHealth, 0);
         }
 
         public void TakeDamage(int damage)
         {
             if (damage <= 0) 
                 return;
-            
+
+            int oldHealth = CurrentHealth; 
             CurrentHealth -= damage;
             if (CurrentHealth <= 0)
                 CurrentHealth = 0;
+            
+            int delta = CurrentHealth - oldHealth;
+            OnChangeHealth?.Invoke(CurrentHealth, delta);
+            
         }
     }
 }
