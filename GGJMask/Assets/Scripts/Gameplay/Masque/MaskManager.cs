@@ -8,6 +8,7 @@ namespace Masque
 	public class MaskManager : MonoBehaviour
 	{
 		public MaskData currentMask;
+		public MaskData newMask;
 		
 		public Hand hand { get; private set; }
 		public Deck deck { get; private set; }

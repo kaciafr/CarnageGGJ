@@ -50,7 +50,7 @@ namespace Gameplay
         {
             if (Input.GetKeyDown(KeyCode.Space) && !isAnimating)
             {
-                AnimateSlotMachine();
+               AnimateSlotMachine();
             }        
         }
         public async void AnimateSlotMachine()

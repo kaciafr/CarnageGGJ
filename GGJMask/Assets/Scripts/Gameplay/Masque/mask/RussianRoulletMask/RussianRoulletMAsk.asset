@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Masque.MaskData
   ID: 0
   Name: RussianRouletMask
-  Description: 
+  Description: "Lors de l\u2019activation de la capacit\xE9, 5% de chance de tuer
+    instantan\xE9ment l\u2019adversaire ou vous m\xEAme"
   Icon: {fileID: 503754409, guid: 1ccf055e654050f408aabb5503e9b8be, type: 3}
   Prefab: {fileID: 0}
   UI: {fileID: 7262416945570569918, guid: d304787241ecf744eacf1584ee90a872, type: 3}
