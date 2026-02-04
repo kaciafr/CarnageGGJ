@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8edad3ee1d8f489eb9d66bd392b673a0, type: 3}
   m_Name: Joker
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.CardSystem.SpecialCards.SpecialCardData
-  <Icon>k__BackingField: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  <Icon>k__BackingField: {fileID: -1846364695, guid: fd06b9ff734756849ba739fe73b4911d, type: 3}
   <Type>k__BackingField: 0
   <Color>k__BackingField: {r: 0, g: 0, b: 0, a: 1}

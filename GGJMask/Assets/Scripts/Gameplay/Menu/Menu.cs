@@ -11,7 +11,6 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
-        buttonMenu.onClick.AddListener(() => LoadScene(sceneName));
     }
 
     private void LoadScene(string sceneName)

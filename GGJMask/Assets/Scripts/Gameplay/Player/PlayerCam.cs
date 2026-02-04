@@ -10,10 +10,11 @@ public class PlayerCam : MonoBehaviour
 
     float xRotation;
     float yRotation;
-
+    
+    /*
     void Update()
     {
-        Vector2 mouseInput = Mouse.current.delta.ReadValue();
+        Vector2 mouseInput = Mouse.current.delta.ReadValue();}
 
         float mouseX = mouseInput.x * sensX * Time.deltaTime;
         float mouseY = mouseInput.y * sensY * Time.deltaTime;
@@ -26,5 +27,5 @@ public class PlayerCam : MonoBehaviour
 
         if (orientation != null)
             orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
-    }
+    }*/
 }

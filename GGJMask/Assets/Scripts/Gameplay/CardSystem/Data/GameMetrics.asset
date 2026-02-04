@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 105a557c401e41f29b853a4c17316501, type: 3}
+  m_Name: GameMetrics
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.GameMetrics
+  <ScoreCardLibrary>k__BackingField: {fileID: 11400000, guid: 60fa5bb3d6d78cf46bb35159ae2c76e2, type: 2}
+  <HandSize>k__BackingField: 5
+  <AttackSize>k__BackingField: 3
+  <DefenseSize>k__BackingField: 2
+  <RiverSize>k__BackingField: 5
+  <NumberSpecial>k__BackingField: 2
+  <CardPrefab>k__BackingField: {fileID: 4587343242975114039, guid: c839f1c53f4ba934bb65d6d2210a5bec, type: 3}

@@ -40,10 +40,10 @@ namespace Gameplay
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space) && !isAnimating)
-            {
-                AnimateSlotMachine();
-            }        
+           // if (Input.GetKeyDown(KeyCode.Space) && !isAnimating)
+           // {
+                //AnimateSlotMachine();
+           // }        
         }
 
         public async void AnimateSlotMachine()
