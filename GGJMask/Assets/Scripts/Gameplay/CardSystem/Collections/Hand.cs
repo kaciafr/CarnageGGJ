@@ -5,6 +5,7 @@ namespace Gameplay.CardSystem.Collections
 {
     public class Hand : CardCollection
     {
+        
         public int MaxCards { get; private set; }
         public Hand(int maxCards = 5)
         {

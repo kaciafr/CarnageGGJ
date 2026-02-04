@@ -9,8 +9,8 @@ namespace Gameplay.CardSystem.Collections
         public event Action<ICard> OnCardAdded;
         public event Action<ICard> OnCardRemoved;
 
-        protected readonly List<ICard> cards = new ();
-        public IReadOnlyList<ICard> Cards => cards;
+        public List<ICard> cards = new ();
+        public List<ICard> Cards => cards;
 
         public int Count => cards.Count;
 
