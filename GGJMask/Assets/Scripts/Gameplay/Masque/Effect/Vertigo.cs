@@ -8,13 +8,11 @@ namespace Masque.Effect
 	public class Vertigo : MaskEffect
 	{
 		
-		public override void ApplyEffect(UtilitiesCards cards)
+		public override void ApplyEffect( )
 		{
-			cards.attackSize = 2;
 			
-			cards.defenseSize = 3;
 		}
-		public override void RemoveEffect(UtilitiesCards cards)
+		public override void RemoveEffect( )
 		{
 		}
 		

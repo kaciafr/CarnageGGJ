@@ -7,8 +7,8 @@ namespace Masque
 
 	public abstract class MaskEffect :  ScriptableObject
 	{
-		public abstract void ApplyEffect(UtilitiesCards  cards);
-		public abstract void RemoveEffect(UtilitiesCards  cards);
+		public abstract void ApplyEffect(  );
+		public abstract void RemoveEffect(  );
 		
 	}
 }

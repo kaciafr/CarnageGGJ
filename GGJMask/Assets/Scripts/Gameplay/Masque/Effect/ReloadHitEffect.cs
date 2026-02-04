@@ -8,14 +8,16 @@ using UnityEngine;
 [CreateAssetMenu(menuName = ("Effect/ReloadHitEffect"))]
 public class ReloadHitEffect : MaskEffect
 {
-	public override void ApplyEffect(UtilitiesCards card)
+	public override void ApplyEffect( )
 	{
 	}
 
-	public override void RemoveEffect(UtilitiesCards cards)
+	public override void RemoveEffect()
 	{
-		
+		throw new NotImplementedException();
 	}
+
+
 	/*
 		Debug.Log("ReloadHitEffect");
 

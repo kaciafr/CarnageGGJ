@@ -8,12 +8,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Effect/BangBankEffect")]
 public class BangBankEffect :  MaskEffect
 {
-	public override void ApplyEffect(UtilitiesCards cards)
+	public override void ApplyEffect( )
 	{
-		cards.defenseSize = 0;
 	}
 
-	public override void RemoveEffect(UtilitiesCards cards)
+	public override void RemoveEffect( )
 	{
 	}
 
