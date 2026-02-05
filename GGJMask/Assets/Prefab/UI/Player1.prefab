@@ -334,6 +334,13 @@ MonoBehaviour:
   defenseUI: {fileID: 4261303674762771048}
   attackUI: {fileID: 2311721693109955057}
   canvasGroup: {fileID: 5539448651512792442}
+  canvas: {fileID: 0}
+  damageText: {fileID: 0}
+  comboText: {fileID: 0}
+  moneText: {fileID: 0}
+  healthText: {fileID: 0}
+  cardMaxSelected: 3
+  maskManager: {fileID: 7662751047912106611, guid: fa1347093931dd34d94de402310c378e, type: 3}
 --- !u!225 &5539448651512792442
 CanvasGroup:
   m_ObjectHideFlags: 0

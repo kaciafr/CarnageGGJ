@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Reload : MonoBehaviour
 {
-	[SerializeField] private ReloadHitEffect reloadHitEffect;
+	//[SerializeField] private ReloadHitEffect reloadHitEffect;
 	[SerializeField] private GameObject uiReload;
 	[SerializeField] private MaskManager maskManager;
 	

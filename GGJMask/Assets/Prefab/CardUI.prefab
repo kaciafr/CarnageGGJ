@@ -353,6 +353,8 @@ MonoBehaviour:
   shadow: {fileID: 1331700572778218109}
   shake: 10
   scale: 1.2
+  maxSelectAtt: 3
+  maskManager: {fileID: 7662751047912106611, guid: fa1347093931dd34d94de402310c378e, type: 3}
 --- !u!1 &4623658596168199453
 GameObject:
   m_ObjectHideFlags: 0

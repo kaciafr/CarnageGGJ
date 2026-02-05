@@ -1,37 +1,36 @@
+using System;
 using Gameplay.CardSystem;
-using Gameplay.CardSystem.Collections;
+using Gameplay.CardSystem.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Masque
 {
 	public class MaskManager : MonoBehaviour
 	{
 		public MaskData currentMask;
-		public MaskData newMask;
-		
-		public Hand hand { get; private set; }
-		public Deck deck { get; private set; }
+		private CardPlayerUI player;
+
 		private void Awake()
 		{
-			hand = new Hand(5);
-			deck = new Deck();
+			player = GetComponent<CardPlayerUI>();
+
 		}
-		public void EquipMask(MaskData mask)
+
+		public void EquipMask()
 		{
-			if(currentMask != null)
-				currentMask.Effect.RemoveEffect();
+			if (currentMask != null)
+				currentMask.Effect.RemoveEffect(player);
 			
-
-			currentMask = mask;
-			//mask.Effect.ApplyPlayerEffect(hand, deck, null);
-			mask.Effect.ApplyEffect();
+			currentMask.Effect.ApplyEffect(player);
 		}
 
-		public void UnequipMask(MaskData mask)
+		public void UnequipMask()
 		{
 			if (currentMask == null)
-				currentMask.Effect.RemoveEffect();
+				return;
+
+			currentMask.Effect.RemoveEffect(player);
+			currentMask = null;
 		}
 	}
 }
