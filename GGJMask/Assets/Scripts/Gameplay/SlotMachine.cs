@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using Masque;
+using Random = UnityEngine.Random;
 
 namespace Gameplay
 {
@@ -24,7 +26,6 @@ namespace Gameplay
         private bool isAnimating = false;
         
         private SlotSymbol[] wheelResults;
-        
         public enum SlotSymbol
         {
             Cherry,
@@ -51,6 +52,7 @@ namespace Gameplay
             if (Input.GetKeyDown(KeyCode.Space) && !isAnimating)
             {
                AnimateSlotMachine();
+               RandomWin();
             }        
         }
         public async void AnimateSlotMachine()
