@@ -49,7 +49,6 @@ namespace Gameplay.CardSystem
             if (currentTurnManager != null)
             {
                 currentTurnManager.OnDesactivateCanvas += DeactivateCanvas;
-                currentTurnManager.OnGameStarted += ActivateCanvas;
             }
 
             canvasGroup.blocksRaycasts = isRealPlayer;
@@ -75,7 +74,6 @@ namespace Gameplay.CardSystem
             UpdateHealthDisplay(currentPlayer.CurrentHealth);
             UpdateMoneyDisplay();
             
-            // ⭐ Au début du tour = AFFICHER les dégâts (préparation)
             ShowDamageText();
         }
 
@@ -130,7 +128,6 @@ namespace Gameplay.CardSystem
             if (currentTurnManager != null)
             {
                 currentTurnManager.OnDesactivateCanvas -= DeactivateCanvas;
-                currentTurnManager.OnGameStarted -= ActivateCanvas;
             }
 
             if(handUI != null)
@@ -234,7 +231,7 @@ namespace Gameplay.CardSystem
             if (damageText != null)
             {
                 damageText.gameObject.SetActive(true);
-                Debug.Log($"[{currentPlayer?.gameObject.name}] ✅ Affiche zone dégâts (préparation)");
+                Debug.Log($"[{currentPlayer?.gameObject.name}]  Affiche zone dégâts (préparation)");
             }
 
             if (comboText != null)
@@ -246,7 +243,7 @@ namespace Gameplay.CardSystem
             if (damageText != null)
             {
                 damageText.gameObject.SetActive(false);
-                Debug.Log($"[{currentPlayer?.gameObject.name}] 🚫 Cache dégâts (attaque en cours)");
+                Debug.Log($"[{currentPlayer?.gameObject.name}]  Cache dégâts (attaque en cours)");
             }
 
             if (comboText != null)

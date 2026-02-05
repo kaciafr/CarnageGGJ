@@ -334,6 +334,11 @@ MonoBehaviour:
   defenseUI: {fileID: 4261303674762771048}
   attackUI: {fileID: 2311721693109955057}
   canvasGroup: {fileID: 5539448651512792442}
+  canvas: {fileID: 0}
+  damageText: {fileID: 0}
+  comboText: {fileID: 0}
+  moneText: {fileID: 0}
+  healthText: {fileID: 0}
 --- !u!225 &5539448651512792442
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -505,7 +510,7 @@ RectTransform:
   m_GameObject: {fileID: 2933177404871867248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.535151, y: 0.50505, z: 0.50505}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 590774903533758468}
@@ -513,7 +518,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -40, y: 201}
+  m_AnchoredPosition: {x: -516, y: 290}
   m_SizeDelta: {x: 641.824, y: 36.929}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &508881731400880087

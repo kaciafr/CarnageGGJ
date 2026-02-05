@@ -173,12 +173,13 @@ public class TurnManager : MonoBehaviour
         CurrentTurn = 0;
         CurrentTurnPlayer = null;
         River.Clear();
-        Deck.Clear();
-
+        RefreshDeck();
+        
         for (int i = 0; i < cardPlayers.Length; i++)
         {
             cardPlayers[i].MainHand.Clear();
             cardPlayers[i].HandAttack.Clear();
+            cardPlayers[i].HandDefense.Clear();
         }
 
         gameCoroutine = StartCoroutine(PlayCardGame());
