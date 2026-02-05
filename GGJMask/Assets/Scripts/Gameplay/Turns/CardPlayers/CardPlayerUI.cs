@@ -11,21 +11,20 @@ namespace Gameplay.CardSystem
 {
     public class CardPlayerUI : MonoBehaviour
     {
-        [SerializeField]
-        private CardCollectionUI handUI;
-        [SerializeField]
-        private CardCollectionUI defenseUI;
-        [SerializeField]
-        private CardCollectionUI attackUI;
-        [SerializeField]
-        private CanvasGroup canvasGroup;
-        [SerializeField]
-        private Canvas canvas;
+        [SerializeField] private CardCollectionUI handUI;
+        [SerializeField] private CardCollectionUI defenseUI;
+        [SerializeField] private CardCollectionUI attackUI;
+        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private Canvas canvas;
 
         [SerializeField] private TMP_Text damageText;
         [SerializeField] private TMP_Text comboText;
         [SerializeField] private TMP_Text moneText;
         [SerializeField] private TMP_Text healthText;
+
+        [Header("Containers à animer")]
+        [SerializeField] private RectTransform damageContainer;
+        [SerializeField] private RectTransform comboContainer;
 
         private CardPlayer currentPlayer;
         private TurnManager currentTurnManager;
@@ -73,14 +72,27 @@ namespace Gameplay.CardSystem
 
             UpdateHealthDisplay(currentPlayer.CurrentHealth);
             UpdateMoneyDisplay();
-            
+
             ShowDamageText();
         }
 
         private void OnDamageChanged()
         {
-      
             UpdateDamageDisplay();
+
+            // 💥 ANIMATION DAMAGE - SCALE UNIQUEMENT (pas de mouvement)
+            if (damageContainer != null)
+            {
+                damageContainer.DOKill();
+
+                Sequence damageSeq = DOTween.Sequence();
+
+                // Pop explosif
+                damageSeq.Append(damageContainer.DOScale(1.8f, 0.15f).SetEase(Ease.OutBack));
+                
+                // Retour élastique
+                damageSeq.Append(damageContainer.DOScale(1f, 0.4f).SetEase(Ease.OutElastic));
+            }
         }
 
         private void OnMoneyChanged()
@@ -88,8 +100,6 @@ namespace Gameplay.CardSystem
             UpdateMoneyDisplay();
         }
 
-       
-     
         private void UpdateDamageDisplay()
         {
             if (currentPlayer == null || currentTurnManager == null)
@@ -101,12 +111,33 @@ namespace Gameplay.CardSystem
             );
 
             if (damageText != null)
-                damageText.text = $"Dégâts: {totalDamage}";
+                damageText.text = $"{totalDamage}";
 
+            int combo = 0; 
             if (comboText != null)
-                comboText.text = $"Combo: 0";
+            {
+                comboText.text = $"{combo}";
 
-            Debug.Log($"[{currentPlayer.gameObject.name}] 💥 Dégâts préparés: {totalDamage}");
+                if (combo > 0 && comboContainer != null)
+                {
+                    comboContainer.DOKill();
+
+                    float intensity = Mathf.Min(combo / 5f, 3f);
+
+                    Sequence comboSeq = DOTween.Sequence();
+
+                    // Pop explosif
+                    comboSeq.Append(comboContainer.DOScale(2.5f * intensity, 0.12f).SetEase(Ease.OutQuad));
+
+                    // Punch scale (reste en place)
+                    comboSeq.Append(comboContainer.DOPunchScale(Vector3.one * 0.8f * intensity, 0.5f, 15, 1f));
+
+                    // Retour élastique
+                    comboSeq.Append(comboContainer.DOScale(1f, 0.4f).SetEase(Ease.OutElastic));
+                }
+            }
+
+            Debug.Log($"[{currentPlayer.gameObject.name}] Dégâts: {totalDamage}, Combo: {combo}");
         }
 
         private void UpdateMoneyDisplay()
@@ -119,11 +150,14 @@ namespace Gameplay.CardSystem
 
         public void Disconnect()
         {
-            currentPlayer.OnBeginTurn -= OnNewTurnBegins;
-            currentPlayer.OnEndTurn -= OnNewTurnEnds;
-            currentPlayer.OnChangeHealth -= OnHealthChanged;
-            currentPlayer.OnChangedDamage -= OnDamageChanged;
-            currentPlayer.OnChangedMoney -= OnMoneyChanged;
+            if (currentPlayer != null)
+            {
+                currentPlayer.OnBeginTurn -= OnNewTurnBegins;
+                currentPlayer.OnEndTurn -= OnNewTurnEnds;
+                currentPlayer.OnChangeHealth -= OnHealthChanged;
+                currentPlayer.OnChangedDamage -= OnDamageChanged;
+                currentPlayer.OnChangedMoney -= OnMoneyChanged;
+            }
 
             if (currentTurnManager != null)
             {
@@ -176,7 +210,7 @@ namespace Gameplay.CardSystem
                         cardUI.CurrentCard.Transfer(handUI.Collection, defenseUI.Collection);
                 }
             }
-            
+
             HideDamageText();
 
             currentPlayer.SetIsDone();
@@ -184,21 +218,19 @@ namespace Gameplay.CardSystem
 
         private void OnNewTurnBegins()
         {
-          
             ShowDamageText();
             UpdateDamageDisplay();
         }
 
         private void OnNewTurnEnds()
         {
-           
             HideDamageText();
         }
 
         private void UpdateHealthDisplay(int hp)
         {
             if (healthText != null)
-                healthText.text = $"Pv: {hp}";
+                healthText.text = $"{hp}";
         }
 
         private void OnHealthChanged(int newHp, int delta)
@@ -225,25 +257,25 @@ namespace Gameplay.CardSystem
                 canvas.enabled = true;
             }
         }
-        
+
         private void ShowDamageText()
         {
             if (damageText != null)
             {
                 damageText.gameObject.SetActive(true);
-                Debug.Log($"[{currentPlayer?.gameObject.name}]  Affiche zone dégâts (préparation)");
+                Debug.Log($"[{currentPlayer?.gameObject.name}] Affiche zone dégâts");
             }
 
             if (comboText != null)
                 comboText.gameObject.SetActive(true);
         }
-        
+
         public void HideDamageText()
         {
             if (damageText != null)
             {
                 damageText.gameObject.SetActive(false);
-                Debug.Log($"[{currentPlayer?.gameObject.name}]  Cache dégâts (attaque en cours)");
+                Debug.Log($"[{currentPlayer?.gameObject.name}] Cache dégâts");
             }
 
             if (comboText != null)
