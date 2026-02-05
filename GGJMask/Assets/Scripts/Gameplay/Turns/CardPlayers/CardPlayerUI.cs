@@ -37,7 +37,7 @@ namespace Gameplay.CardSystem
         private void Start()
         {
             
-            maskManager.EquipMask();
+           // maskManager.EquipMask();
         }
 
         public void Connect(TurnManager turnManager, CardPlayer cardPlayer)

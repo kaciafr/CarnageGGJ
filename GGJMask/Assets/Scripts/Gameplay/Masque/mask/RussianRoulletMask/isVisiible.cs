@@ -4,7 +4,7 @@ namespace Masque.mask.RussianRoulletMask
 {
     /*public class IsVisiible : MonoBehaviour
     {
-        /*[SerializeField] private RussianRoulletEffect roulletEffect;
+        [SerializeField] private RussianRoulletEffect roulletEffect;
         private int dead;
         [SerializeField] private GameObject ui;
 
@@ -40,6 +40,6 @@ namespace Masque.mask.RussianRoulletMask
                 Debug.Log(dead);
                 ui.SetActive(false);
             }
-        }*/
-    }
+        }
+    }*/
 }
