@@ -196,7 +196,6 @@ public class TurnManager : MonoBehaviour
     public void UseMask()
     {
         reloadHitEffect.ApplyEffect(this);
-        
         RefreshDeck();
         
     }

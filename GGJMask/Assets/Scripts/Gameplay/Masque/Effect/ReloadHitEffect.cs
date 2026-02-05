@@ -8,18 +8,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = ("Effect/ReloadHitEffect"))]
 public class ReloadHitEffect : MaskEffect
 {
-    public int healthCost = 5;
-    
-    private bool hasBeenUsed = false;
+    public int healthCost = 5; 
 
     public override void ApplyEffect(TurnManager manager)
     {
-        if (hasBeenUsed)
-        {
-            Debug.Log("⚠️ Masque déjà utilisé cette partie !");
-            return;
-        }
-        
         CardPlayer player = manager.CurrentTurnPlayer;
         
         player.TakeDamage(healthCost);
@@ -32,15 +24,11 @@ public class ReloadHitEffect : MaskEffect
             player.MainHand.AddCard(card);
         }
         
-        hasBeenUsed = true;
-        
-        Debug.Log($" Masque utilisé ! {player.name} perd {healthCost} PV (Plus disponible)");
+        Debug.Log($"Masque utilisé ! {player.name} perd {healthCost} PV et recharge sa main");
     }
 
     public override void RemoveEffect()
     {
-        hasBeenUsed = false;
+        Debug.Log("ReloadHitEffect n'a pas d'effet permanent à retirer");
     }
-    
-    public bool CanBeUsed() => !hasBeenUsed;
 }
