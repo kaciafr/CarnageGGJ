@@ -26,6 +26,9 @@ namespace Gameplay
         private bool isAnimating = false;
         
         private SlotSymbol[] wheelResults;
+        [SerializeField] private ScriptEntermachine scriptEntermachine;
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioSource VictoryaudioSource;
         public enum SlotSymbol
         {
             Cherry,
@@ -49,11 +52,11 @@ namespace Gameplay
         }
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space) && !isAnimating)
+            if (Input.GetKeyDown(KeyCode.Space) && !isAnimating && scriptEntermachine.enter)
             {
                AnimateSlotMachine();
-               RandomWin();
-            }        
+                audioSource.Play();
+            }
         }
         public async void AnimateSlotMachine()
         {
@@ -62,8 +65,8 @@ namespace Gameplay
             isAnimating = true;
 
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(transform.DOLocalRotate(new Vector3(pullAngle, 0f, 0f), returnDuration).SetEase(Ease.OutQuad));
-            sequence.Append(transform.DOLocalRotate(new Vector3(restAngle, 0f, 0f), returnDuration).SetEase(Ease.OutBounce));
+            sequence.Append(transform.DOLocalRotate(new Vector3( 0f,pullAngle, 0f), returnDuration).SetEase(Ease.OutQuad));
+            sequence.Append(transform.DOLocalRotate(new Vector3( 0f,restAngle, 0f), returnDuration).SetEase(Ease.OutBounce));
 
             OnLeverPull();
             
@@ -107,7 +110,7 @@ namespace Gameplay
             {
                 float randomSpeed = Random.Range(minSpeed, maxSpeed);
         
-                wheelTweens[i] = wheels[i].transform.DOLocalRotate(new Vector3(360, 0, 0), randomSpeed, RotateMode.FastBeyond360)
+                wheelTweens[i] = wheels[i].transform.DOLocalRotate(new Vector3( 0,360, 0), randomSpeed, RotateMode.FastBeyond360)
                     .SetLoops(-1, LoopType.Restart)
                     .SetEase(Ease.Linear)
                     .SetRelative(true);
@@ -145,6 +148,7 @@ namespace Gameplay
 
         private void OnWin( SlotSymbol symbol)
         {
+            VictoryaudioSource.Play();
             Debug.Log($" GAGNÉ : {symbol} !");
             RandomWin();
 

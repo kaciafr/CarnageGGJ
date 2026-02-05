@@ -25,8 +25,14 @@ public class InventorySysteme : MonoBehaviour
 		{
 			inventoryPrefab.SetActive(isActive);
 			isActive = !isActive;
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
+
 			Debug.Log(isActive);
 		}
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+
 			
 	}
 	
