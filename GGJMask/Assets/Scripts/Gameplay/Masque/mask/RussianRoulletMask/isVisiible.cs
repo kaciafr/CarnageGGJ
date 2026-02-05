@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Masque.mask.RussianRoulletMask
 {
-    public class IsVisiible : MonoBehaviour
+    /*public class IsVisiible : MonoBehaviour
     {
         /*[SerializeField] private RussianRoulletEffect roulletEffect;
         private int dead;

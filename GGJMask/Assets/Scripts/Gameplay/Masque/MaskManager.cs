@@ -1,7 +1,7 @@
+using System;
 using Gameplay.CardSystem;
-using Gameplay.CardSystem.Collections;
+using Gameplay.CardSystem.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Masque
 {
@@ -15,13 +15,14 @@ namespace Masque
 		public Deck deck { get; private set; }
 		private void Awake()
 		{
-			hand = new Hand(5);
-			deck = new Deck();
+			player = GetComponent<CardPlayerUI>();
+
 		}
-		public void EquipMask(MaskData mask)
+
+		public void EquipMask()
 		{
-			if(currentMask != null)
-				currentMask.Effect.RemoveEffect();
+			if (currentMask != null)
+				currentMask.Effect.RemoveEffect(player);
 			
 
 			currentMask = mask;
@@ -29,10 +30,13 @@ namespace Masque
 			mask.Effect.ApplyEffect(turnManager);
 		}
 
-		public void UnequipMask(MaskData mask)
+		public void UnequipMask()
 		{
 			if (currentMask == null)
-				currentMask.Effect.RemoveEffect();
+				return;
+
+			currentMask.Effect.RemoveEffect(player);
+			currentMask = null;
 		}
 	}
 }

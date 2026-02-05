@@ -1,5 +1,6 @@
 using Gameplay.CardSystem;
 using Gameplay.CardSystem.Collections;
+using Gameplay.CardSystem.UI;
 using UnityEngine;
 
 namespace Masque

@@ -1,6 +1,8 @@
+using System;
 using DG.Tweening;
 using Gameplay.CardSystem.Turns;
 using Gameplay.CardSystem.UI;
+using Masque;
 using RunTime.TpTSystem;
 using TMPro;
 using UnityEngine;
@@ -28,6 +30,15 @@ namespace Gameplay.CardSystem
 
         private CardPlayer currentPlayer;
         private TurnManager currentTurnManager;
+        public int cardMaxSelected = 3;
+        
+        public MaskManager maskManager;
+
+        private void Start()
+        {
+            
+            maskManager.EquipMask();
+        }
 
         public void Connect(TurnManager turnManager, CardPlayer cardPlayer)
         {
@@ -193,9 +204,9 @@ namespace Gameplay.CardSystem
         {
             int selectedCount = handUI.GetSelectedCardsCount();
 
-            if (selectedCount != 3)
+            if (selectedCount != cardMaxSelected)
             {
-                Debug.Log($"❌ Vous devez sélectionner exactement 3 cartes ! ({selectedCount}/3)");
+                Debug.Log($"❌ Vous devez sélectionner exactement 3 cartes ! ({selectedCount}/{cardMaxSelected})");
                 return; 
             }
 

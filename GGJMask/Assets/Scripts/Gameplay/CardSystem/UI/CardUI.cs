@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Gameplay.CardSystem.PointCards;
 using Gameplay.CardSystem.SpecialCards;
+using Masque;
 using RunTime.TpTSystem;
 using TMPro;
 using UnityEngine;
@@ -38,7 +39,7 @@ namespace Gameplay.CardSystem.UI
         private float scale = 1.2f;
         public ICard CurrentCard { get; private set; }
         public Transform Slot { get; private set; }
-        
+        public  int maxSelectAtt = 3;
         public bool IsDragged { get; private set; }
         
         public bool IsSelected { get; private set; }
@@ -46,9 +47,23 @@ namespace Gameplay.CardSystem.UI
         public Vector3 DraggedPosition { get; private set; }
         
         public CardCollectionUI CollectionUI { get; private set; }
-        
 
         private float angleY;
+        
+        [SerializeField] private MaskManager maskManager;
+        
+        
+        private void Awake()
+        {
+            if (maskManager == null)
+                maskManager = GetComponent<MaskManager>();
+
+            if (maskManager == null)
+            {
+                Debug.LogError($"[CardUI] MaskManager manquant sur {gameObject.name}");
+            }
+        }
+        
         public void Connect(ICard card)
         {
             if(CurrentCard != null)
@@ -71,6 +86,7 @@ namespace Gameplay.CardSystem.UI
             }
             
         }
+        
 
         public void Disconnect()
         {
@@ -79,7 +95,6 @@ namespace Gameplay.CardSystem.UI
 
         private void Update()
         {
-            
             Vector3 targetPosition;
             if (IsDragged)
                 targetPosition = DraggedPosition;
@@ -139,7 +154,6 @@ namespace Gameplay.CardSystem.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            
             if(CollectionUI == null || !CollectionUI.CanInteract)
                 return;
         }
@@ -158,8 +172,9 @@ namespace Gameplay.CardSystem.UI
             if (!IsSelected)
             {
                 int selectedCount = CollectionUI.GetSelectedCardsCount();
-        
-                if (selectedCount >= 3)
+
+                
+                if (selectedCount >= maxSelectAtt )
                 {
                     Debug.Log("Maximum 3 cartes sélectionnées !");
                     return;

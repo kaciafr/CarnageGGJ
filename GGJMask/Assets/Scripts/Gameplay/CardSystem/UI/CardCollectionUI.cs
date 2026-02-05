@@ -118,7 +118,6 @@ namespace RunTime.TpTSystem
         public int GetSelectedCardsCount()
         {
             int count = 0;
-    
             foreach (CardUI cardUI in Cards)
             {
                 if (cardUI != null && cardUI.IsSelected)
