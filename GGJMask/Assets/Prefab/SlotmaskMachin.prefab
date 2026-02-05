@@ -146,8 +146,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Inventory.SlotUI
   image: {fileID: 5987106828552787796}
-  maskManager: {fileID: 0}
-  UI: {fileID: 2689335123176896011, guid: ef4ea2973b4a3d54b907041046916289, type: 3}
-  UIImage: {fileID: 7756071604642691291, guid: ef4ea2973b4a3d54b907041046916289, type: 3}
-  text: {fileID: 0}
-  NameText: {fileID: 0}
+  maskManager: {fileID: 8987935908814720818, guid: fa1347093931dd34d94de402310c378e, type: 3}
+  maskData: {fileID: 0}
