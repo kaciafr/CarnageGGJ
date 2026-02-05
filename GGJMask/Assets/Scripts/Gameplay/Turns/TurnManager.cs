@@ -3,6 +3,7 @@ using System.Collections;
 using Gameplay;
 using Gameplay.CardSystem;
 using Gameplay.CardSystem.Collections;
+using Masque;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
@@ -29,12 +30,16 @@ public class TurnManager : MonoBehaviour
     [field: SerializeField] 
     public GameMetrics Metrics { get; private set; }
 
-    [SerializeField] private int moneyReward = 500;
+    [SerializeField] public  int moneyReward = 500;
     [SerializeField] private float delayBeforeRetry = 2f;
 
     private Coroutine gameCoroutine;
 
+    public MaskManager MaskManager; 
+
     public ReloadHitEffect reloadHitEffect;
+    public RiverChangeEffect reloadChangeEffect; 
+
 
     private void Awake()
     {
@@ -193,11 +198,17 @@ public class TurnManager : MonoBehaviour
         Deck.Shuffle();
     }
 
-    public void UseMask()
-    {
+    public void UseMaskReloadHitEffect()
+    { 
+        
         reloadHitEffect.ApplyEffect(this);
         RefreshDeck();
         
+    }
+
+    public void UseMaskReloadRiver()
+    {
+        reloadChangeEffect.ApplyEffect(this);
     }
     
     

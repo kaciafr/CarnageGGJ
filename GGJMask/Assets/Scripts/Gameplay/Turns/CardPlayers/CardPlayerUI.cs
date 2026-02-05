@@ -91,17 +91,14 @@ namespace Gameplay.CardSystem
         {
             UpdateDamageDisplay();
 
-            // 💥 ANIMATION DAMAGE - SCALE UNIQUEMENT (pas de mouvement)
             if (damageContainer != null)
             {
                 damageContainer.DOKill();
 
                 Sequence damageSeq = DOTween.Sequence();
 
-                // Pop explosif
                 damageSeq.Append(damageContainer.DOScale(1.8f, 0.15f).SetEase(Ease.OutBack));
                 
-                // Retour élastique
                 damageSeq.Append(damageContainer.DOScale(1f, 0.4f).SetEase(Ease.OutElastic));
             }
         }
@@ -137,13 +134,10 @@ namespace Gameplay.CardSystem
 
                     Sequence comboSeq = DOTween.Sequence();
 
-                    // Pop explosif
                     comboSeq.Append(comboContainer.DOScale(2.5f * intensity, 0.12f).SetEase(Ease.OutQuad));
 
-                    // Punch scale (reste en place)
                     comboSeq.Append(comboContainer.DOPunchScale(Vector3.one * 0.8f * intensity, 0.5f, 15, 1f));
 
-                    // Retour élastique
                     comboSeq.Append(comboContainer.DOScale(1f, 0.4f).SetEase(Ease.OutElastic));
                 }
             }
@@ -292,5 +286,13 @@ namespace Gameplay.CardSystem
             if (comboText != null)
                 comboText.gameObject.SetActive(false);
         }
+        
+
+        public void SetCardMaxSelected(int newMax)
+        {
+            cardMaxSelected = newMax;
+            Debug.Log($" Limite de sélection changée : {cardMaxSelected} cartes");
+        }
+
     }
 }

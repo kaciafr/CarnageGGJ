@@ -26,7 +26,6 @@ namespace Masque
 			
 
 			currentMask = mask;
-			//mask.Effect.ApplyPlayerEffect(hand, deck, null);
 			mask.Effect.ApplyEffect(turnManager);
 		}
 

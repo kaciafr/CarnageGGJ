@@ -101,19 +101,7 @@ namespace Gameplay.CardSystem
             int delta = CurrentHealth - oldHealth;
             OnChangeHealth?.Invoke(CurrentHealth, delta);
         }
-
-        public void TakeDamageSimple(int damageSimple)
-        {
-            CurrentHealth -= damageSimple;
-            if (CurrentHealth <= 0)
-                CurrentHealth = 0;
-
-            
-    
-         
-    
-           
-        }
+        
 
         public void AddMoney(int amount = -1)
         {
@@ -132,9 +120,5 @@ namespace Gameplay.CardSystem
             }
         }
 
-        public void ResetForNewGame()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
