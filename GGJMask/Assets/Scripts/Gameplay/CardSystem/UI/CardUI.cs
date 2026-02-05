@@ -53,16 +53,6 @@ namespace Gameplay.CardSystem.UI
         [SerializeField] private MaskManager maskManager;
         
         
-        private void Awake()
-        {
-            if (maskManager == null)
-                maskManager = GetComponent<MaskManager>();
-
-            if (maskManager == null)
-            {
-                Debug.LogError($"[CardUI] MaskManager manquant sur {gameObject.name}");
-            }
-        }
         
         public void Connect(ICard card)
         {

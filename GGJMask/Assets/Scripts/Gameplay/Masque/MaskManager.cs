@@ -1,5 +1,6 @@
 using System;
 using Gameplay.CardSystem;
+using Gameplay.CardSystem.Collections;
 using Gameplay.CardSystem.UI;
 using UnityEngine;
 
@@ -15,14 +16,13 @@ namespace Masque
 		public Deck deck { get; private set; }
 		private void Awake()
 		{
-			player = GetComponent<CardPlayerUI>();
 
 		}
 
-		public void EquipMask()
+		public void EquipMask(MaskData mask)
 		{
 			if (currentMask != null)
-				currentMask.Effect.RemoveEffect(player);
+				currentMask.Effect.RemoveEffect();
 			
 
 			currentMask = mask;
@@ -35,7 +35,7 @@ namespace Masque
 			if (currentMask == null)
 				return;
 
-			currentMask.Effect.RemoveEffect(player);
+			currentMask.Effect.RemoveEffect();
 			currentMask = null;
 		}
 	}
