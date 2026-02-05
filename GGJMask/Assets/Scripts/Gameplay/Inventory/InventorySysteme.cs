@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gameplay.Inventory;
 using Masque;
@@ -12,6 +13,24 @@ public class InventorySysteme : MonoBehaviour
 	private MaskData maskData;
 	
 	private int maxSlots = 6;
+	private bool isActive = true;
+
+	private void Start()
+	{
+		inventoryPrefab.SetActive(!isActive);
+	}
+	public void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Q))
+		{
+			inventoryPrefab.SetActive(isActive);
+			isActive = !isActive;
+			Debug.Log(isActive);
+		}
+			
+	}
+	
+	public event Action<MaskData> onInventory;
 	
 	public void AddMAsk(MaskData maskWin)
 	{
@@ -28,6 +47,7 @@ public class InventorySysteme : MonoBehaviour
 		}
 		
 		slots.Add(maskWin);
+		onInventory?.Invoke(maskWin);
 		Debug.Log("Added " + maskWin.ID);
 		
 		GameObject newSlot = Instantiate(slotPrefab, inventoryPrefab.transform);
