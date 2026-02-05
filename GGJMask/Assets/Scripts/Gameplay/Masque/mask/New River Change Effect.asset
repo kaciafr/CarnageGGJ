@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07919bb7d30b99a48b3dd46ce5bf0b20, type: 3}
-  m_Name: New Bang Bank Effect
-  m_EditorClassIdentifier: Assembly-CSharp::BangBankEffect
+  m_Name: New River Change Effect
+  m_EditorClassIdentifier: Assembly-CSharp::RiverChangeEffect

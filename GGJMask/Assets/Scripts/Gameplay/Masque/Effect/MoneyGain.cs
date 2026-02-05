@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay.Masque.Effect
 {
-    [CreateAssetMenu(menuName = "Effect/RiverChangeEffect")]
+    [CreateAssetMenu(menuName = "Effect/MoneyGain")]
     public class MoneyGain : MaskEffect
     {
         public override void ApplyEffect(TurnManager manager)

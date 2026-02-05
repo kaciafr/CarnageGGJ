@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Gameplay;
 using Gameplay.CardSystem;
 using Gameplay.CardSystem.Collections;
+using Gameplay.Masque.Effect;
 using Masque;
+using Masque.Effect;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
@@ -16,7 +19,6 @@ public class TurnManager : MonoBehaviour
     public event Action<CardPlayer> OnGameOver; 
     public event Action OnGameStarted;
     public event Action OnDesactivateCanvas; 
-    
     public event Action OnComboChanged;
 
     public CardPlayer[] Players => cardPlayers;
@@ -30,21 +32,34 @@ public class TurnManager : MonoBehaviour
     [field: SerializeField] 
     public GameMetrics Metrics { get; private set; }
 
-    [SerializeField] public  int moneyReward = 500;
+    [SerializeField] public int moneyReward = 500;
     [SerializeField] private float delayBeforeRetry = 2f;
+
+    [Header("⏳ Cooldowns des Masques")]
+    [SerializeField] private int cooldownDuration = 3;
 
     private Coroutine gameCoroutine;
 
     public MaskManager MaskManager; 
 
     public ReloadHitEffect reloadHitEffect;
-    public RiverChangeEffect reloadChangeEffect; 
+    public RiverChangeEffect reloadChangeEffect;
+    public MoneyGain MoneyGain; 
+    public SwapHandsEffect swapHandsEffect;
+    public SwapHandWithRiverEffect swapHandWithRiverEffect;
 
+    private Dictionary<string, int> maskCooldowns = new Dictionary<string, int>();
 
     private void Awake()
     {
         River = new River();
         Deck = new Deck();
+        
+        maskCooldowns["ReloadHit"] = 0;
+        maskCooldowns["ReloadRiver"] = 0;
+        maskCooldowns["MoneyGain"] = 0;
+        maskCooldowns["SwapHands"] = 0;
+        maskCooldowns["SwapHandRiver"] = 0;
     }
 
     private void Start()
@@ -68,6 +83,8 @@ public class TurnManager : MonoBehaviour
         { 
             CurrentTurn++;
             OnTurnChanged?.Invoke();
+            
+            UpdateCooldowns();
 
             OnSetupPhase?.Invoke();
             RefreshDeck();
@@ -118,6 +135,81 @@ public class TurnManager : MonoBehaviour
         }
 
         yield return StartCoroutine(HandleGameOverWithRetry(losingPlayer));
+    }
+
+    private void UpdateCooldowns()
+    {
+        List<string> keys = new List<string>(maskCooldowns.Keys);
+        foreach (string key in keys)
+        {
+            if (maskCooldowns[key] > 0)
+            {
+                maskCooldowns[key]--;
+                Debug.Log($"⏳ {key} cooldown: {maskCooldowns[key]} tours restants");
+            }
+        }
+    }
+
+    private bool CanUseMask(string maskName)
+    {
+        if (maskCooldowns[maskName] > 0)
+        {
+            Debug.Log($" {maskName} en cooldown ! Attends {maskCooldowns[maskName]} tours");
+            return false;
+        }
+        return true;
+    }
+
+    private void ActivateCooldown(string maskName)
+    {
+        maskCooldowns[maskName] = cooldownDuration;
+        Debug.Log($" {maskName} utilisé ! Cooldown de {cooldownDuration} tours activé");
+    }
+
+    public void UseMaskReloadHitEffect()
+    { 
+        if (!CanUseMask("ReloadHit")) return;
+
+        reloadHitEffect.ApplyEffect(this);
+        RefreshDeck();
+        ActivateCooldown("ReloadHit");
+    }
+
+    public void UseMaskReloadRiver()
+    {
+        if (!CanUseMask("ReloadRiver")) return;
+
+        reloadChangeEffect.ApplyEffect(this);
+        ActivateCooldown("ReloadRiver");
+    }
+
+    public void UseGainMoney()
+    { 
+        if (!CanUseMask("MoneyGain")) return;
+
+        MoneyGain.ApplyEffect(this);
+        ActivateCooldown("MoneyGain");
+    }
+
+    public void SwapHandsEffect()
+    {
+        if (!CanUseMask("SwapHands")) return;
+
+        swapHandsEffect.ApplyEffect(this);
+        ActivateCooldown("SwapHands");
+    }
+
+    public void SwapHandWithRiverEffect()
+    {
+        if (!CanUseMask("SwapHandRiver")) return;
+
+        swapHandWithRiverEffect.ApplyEffect(this);
+        ActivateCooldown("SwapHandRiver");
+    }
+
+    public int GetCooldown(string maskName)
+    {
+        return maskCooldowns.ContainsKey(maskName) ? maskCooldowns[maskName] : 0;
     }
 
     private IEnumerator HandleGameOverWithRetry(int losingPlayerIndex)
@@ -181,6 +273,11 @@ public class TurnManager : MonoBehaviour
         River.Clear();
         RefreshDeck();
         
+        foreach (var key in new List<string>(maskCooldowns.Keys))
+        {
+            maskCooldowns[key] = 0;
+        }
+
         for (int i = 0; i < cardPlayers.Length; i++)
         {
             cardPlayers[i].MainHand.Clear();
@@ -197,21 +294,4 @@ public class TurnManager : MonoBehaviour
         Deck.FillCollectionWithAllCards(Metrics);
         Deck.Shuffle();
     }
-
-    public void UseMaskReloadHitEffect()
-    { 
-        
-        reloadHitEffect.ApplyEffect(this);
-        RefreshDeck();
-        
-    }
-
-    public void UseMaskReloadRiver()
-    {
-        reloadChangeEffect.ApplyEffect(this);
-    }
-    
-    
-  
-
 }

@@ -25,11 +25,11 @@ public class SimpleCanvasOpener : MonoBehaviour
 
         if (Input.GetKeyDown(toggleKey))
         {
-            bool newState = !canvas.gameObject.activeSelf;
-            canvas.gameObject.SetActive(newState);
-            Debug.Log($"Canvas maintenant : {(newState ? "OUVERT" : "FERMÉ")}");
+            canvas.gameObject.SetActive(true);
+            Debug.Log(" Canvas OUVERT !");
         }
     }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -42,12 +42,5 @@ public class SimpleCanvasOpener : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInZone = false;
-            Debug.Log(" PLAYER SORTI DE LA ZONE");
-        }
-    }
+   
 }
