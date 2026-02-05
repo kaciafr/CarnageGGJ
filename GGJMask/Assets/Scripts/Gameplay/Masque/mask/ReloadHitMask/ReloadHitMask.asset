@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe43eb51baa04b2c982e5c83d3dcabde, type: 3}
   m_Name: ReloadHitMask
   m_EditorClassIdentifier: Assembly-CSharp::Masque.MaskData
+  ID: 4
   Name: ReloadHitMask
+  Description: "Permet de jeter la main et de repiocher en \xE9change de 10pv"
+  Icon: {fileID: 21300000, guid: a8026ce360649fc4c83b83833f6e46d3, type: 3}
   Prefab: {fileID: 0}
   UI: {fileID: 0}
   Effect: {fileID: 11400000, guid: 08a31e9764ab7cc49827635a07c260be, type: 2}

@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe43eb51baa04b2c982e5c83d3dcabde, type: 3}
   m_Name: BangBankMask
   m_EditorClassIdentifier: Assembly-CSharp::Masque.MaskData
+  ID: 0
   Name: BangBankMask
+  Description: "D\xE9truit la banque adverse mais aussi la votre"
+  Icon: {fileID: 21300000, guid: 1a9063200f8cbd143914af9d7113e762, type: 3}
   Prefab: {fileID: 0}
   UI: {fileID: 7262416945570569918, guid: d304787241ecf744eacf1584ee90a872, type: 3}
   Effect: {fileID: 11400000, guid: dfb0c5b59376974408dab0a5932c74af, type: 2}

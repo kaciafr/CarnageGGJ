@@ -1,35 +1,44 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
+using Masque;
 
 namespace Gameplay
 {
     public class SlotMachine : MonoBehaviour
     {
+        
+        public InventorySysteme inventory;
         public GameObject[] wheels; 
-
         public GameObject[] Lightsphere;
 
         public Material materialOn;  
         public Material materialOff; 
 
         public float blinkSpeed = 0.5f;
-
         public float pullAngle = -70f;
-
         public float restAngle = 0f;
-
         private float returnDuration = 0.5f;
-
         private bool isAnimating = false;
-
-        public float[] speedRotations = new float[] { 0.3f, 0.5f, 0.7f }; // Vitesse pour chaque roue
-
+        
+        private SlotSymbol[] wheelResults;
+        
+        public enum SlotSymbol
+        {
+            Cherry,
+            Lemon,
+            Skull
+        }
+            
+        [SerializeField] private List<MaskData> maskData = new List<MaskData>();
+        
         private Tweener[] wheelTweens;
-
+        
         public void Start()
         {
+            wheelResults = new SlotSymbol[wheels.Length];
             wheelTweens = new Tweener[wheels.Length];
             
             foreach (GameObject light in Lightsphere)
@@ -37,15 +46,13 @@ namespace Gameplay
                 light.GetComponent<MeshRenderer>().material = materialOff;
             }
         }
-
         private void Update()
         {
-           // if (Input.GetKeyDown(KeyCode.Space) && !isAnimating)
-           // {
-                //AnimateSlotMachine();
-           // }        
+            if (Input.GetKeyDown(KeyCode.Space) && !isAnimating)
+            {
+               AnimateSlotMachine();
+            }        
         }
-
         public async void AnimateSlotMachine()
         {
             if (isAnimating) return;
@@ -111,7 +118,70 @@ namespace Gameplay
             for (int i = 0; i < wheelTweens.Length; i++)
             {
                 wheelTweens[i]?.Kill();
+                wheelResults[i] = GetRandomSymbol();
+                Debug.Log($"Roue {i} : {wheelResults[i]}");
             }
+
+            CheckWin();
+            return;
         }
+
+        private void CheckWin()
+        {
+            SlotSymbol firstSymbol = wheelResults[0];
+            for (int i = 1; i < wheels.Length; i++)
+            {
+                if (wheelResults[i] != firstSymbol)
+                {
+                    Debug.Log($"Perdu gros Looser");
+                    return;
+                }
+
+            }
+                OnWin(firstSymbol);
+        }
+
+        private void OnWin( SlotSymbol symbol)
+        {
+            Debug.Log($" GAGNÉ : {symbol} !");
+            RandomWin();
+
+            int reward = GetReward(symbol);
+            Debug.Log($"Gain : {reward}");
+        }
+        
+        private int GetReward(SlotSymbol symbol)
+        {
+            return symbol switch
+            {
+                SlotSymbol.Cherry => 10,
+                SlotSymbol.Lemon => 20,
+                SlotSymbol.Skull => 50,
+                _ => 0
+            };
+        }
+
+
+        private SlotSymbol GetRandomSymbol()
+        {
+            int count = System.Enum.GetValues(typeof(SlotSymbol)).Length;
+            return (SlotSymbol)Random.Range(0, count);
+        }
+
+        private void RandomWin()
+        {
+            if (inventory == null)
+            {
+                Debug.LogError("InventorySysteme n'est pas assigné !");
+                isAnimating = false;
+                return;
+            }
+
+            MaskData maskWin = maskData[Random.Range(0, maskData.Count)];
+            inventory.AddMAsk(maskWin);
+            Debug.Log("Masque gagné : " + maskWin.Name);
+            isAnimating = false;
+        }
+
     }
 }
