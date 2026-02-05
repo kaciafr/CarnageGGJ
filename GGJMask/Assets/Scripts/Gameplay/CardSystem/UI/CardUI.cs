@@ -161,7 +161,7 @@ namespace Gameplay.CardSystem.UI
         
                 if (selectedCount >= 3)
                 {
-                    Debug.Log("❌ Maximum 3 cartes sélectionnées !");
+                    Debug.Log("Maximum 3 cartes sélectionnées !");
                     return;
                 }
             }

@@ -73,12 +73,15 @@ namespace Gameplay.CardSystem
             }
 
             UpdateHealthDisplay(currentPlayer.CurrentHealth);
-            UpdateDamageDisplay();
             UpdateMoneyDisplay();
+            
+            // ⭐ Au début du tour = AFFICHER les dégâts (préparation)
+            ShowDamageText();
         }
 
         private void OnDamageChanged()
         {
+      
             UpdateDamageDisplay();
         }
 
@@ -87,28 +90,26 @@ namespace Gameplay.CardSystem
             UpdateMoneyDisplay();
         }
 
-      private void UpdateDamageDisplay()
-{
-    if (currentPlayer == null || currentTurnManager == null)
-        return;
+       
+     
+        private void UpdateDamageDisplay()
+        {
+            if (currentPlayer == null || currentTurnManager == null)
+                return;
 
-    int totalDamage = currentTurnManager.River.GetCollectionDamage(
-        currentPlayer.HandAttack,  
-        currentTurnManager.Metrics
-    );
+            int totalDamage = currentTurnManager.River.GetCollectionDamage(
+                currentPlayer.HandAttack,  
+                currentTurnManager.Metrics
+            );
 
-    if (damageText != null)
-        damageText.text = $"Dégâts: {totalDamage}";
+            if (damageText != null)
+                damageText.text = $"Dégâts: {totalDamage}";
 
-    if (comboText != null)
-    {
-        
-        comboText.text = $"Combo: 0";
-    }
+            if (comboText != null)
+                comboText.text = $"Combo: 0";
 
-    Debug.Log($"[{currentPlayer.gameObject.name}] Dégâts calculés: {totalDamage}");
-}
-
+            Debug.Log($"[{currentPlayer.gameObject.name}] 💥 Dégâts préparés: {totalDamage}");
+        }
 
         private void UpdateMoneyDisplay()
         {
@@ -159,6 +160,14 @@ namespace Gameplay.CardSystem
 
         public void EndTurn()
         {
+            int selectedCount = handUI.GetSelectedCardsCount();
+
+            if (selectedCount != 3)
+            {
+                Debug.Log($"❌ Vous devez sélectionner exactement 3 cartes ! ({selectedCount}/3)");
+                return; 
+            }
+
             using (ListPool<CardUI>.Get(out var cardUIs))
             {
                 cardUIs.AddRange(handUI.Cards);
@@ -170,16 +179,23 @@ namespace Gameplay.CardSystem
                         cardUI.CurrentCard.Transfer(handUI.Collection, defenseUI.Collection);
                 }
             }
+            
+            HideDamageText();
 
             currentPlayer.SetIsDone();
         }
 
         private void OnNewTurnBegins()
         {
+          
+            ShowDamageText();
+            UpdateDamageDisplay();
         }
 
         private void OnNewTurnEnds()
         {
+           
+            HideDamageText();
         }
 
         private void UpdateHealthDisplay(int hp)
@@ -213,15 +229,28 @@ namespace Gameplay.CardSystem
             }
         }
         
-        public void ShowDamageDealt(int damage)
+        private void ShowDamageText()
         {
-            damageText.gameObject.SetActive(true);  
-            damageText.text = $"Dégâts: {damage}";
-        }
+            if (damageText != null)
+            {
+                damageText.gameObject.SetActive(true);
+                Debug.Log($"[{currentPlayer?.gameObject.name}] ✅ Affiche zone dégâts (préparation)");
+            }
 
+            if (comboText != null)
+                comboText.gameObject.SetActive(true);
+        }
+        
         public void HideDamageText()
         {
-            damageText.gameObject.SetActive(false);  
+            if (damageText != null)
+            {
+                damageText.gameObject.SetActive(false);
+                Debug.Log($"[{currentPlayer?.gameObject.name}] 🚫 Cache dégâts (attaque en cours)");
+            }
+
+            if (comboText != null)
+                comboText.gameObject.SetActive(false);
         }
     }
 }
