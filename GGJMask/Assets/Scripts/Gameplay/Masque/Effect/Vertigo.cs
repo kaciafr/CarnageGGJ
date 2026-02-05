@@ -8,10 +8,12 @@ namespace Masque.Effect
 	public class Vertigo : MaskEffect
 	{
 		
-		public override void ApplyEffect( )
+
+		public override void ApplyEffect(TurnManager manager)
 		{
-			
+			throw new System.NotImplementedException();
 		}
+
 		public override void RemoveEffect( )
 		{
 		}

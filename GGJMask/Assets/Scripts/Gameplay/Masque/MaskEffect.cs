@@ -7,7 +7,7 @@ namespace Masque
 
 	public abstract class MaskEffect :  ScriptableObject
 	{
-		public abstract void ApplyEffect(  );
+		public abstract void ApplyEffect( TurnManager manager);
 		public abstract void RemoveEffect(  );
 		
 	}

@@ -102,6 +102,19 @@ namespace Gameplay.CardSystem
             OnChangeHealth?.Invoke(CurrentHealth, delta);
         }
 
+        public void TakeDamageSimple(int damageSimple)
+        {
+            CurrentHealth -= damageSimple;
+            if (CurrentHealth <= 0)
+                CurrentHealth = 0;
+
+            
+    
+         
+    
+           
+        }
+
         public void AddMoney(int amount = -1)
         {
             int moneyToAdd = amount > 0 ? amount : MoneyToAdd;

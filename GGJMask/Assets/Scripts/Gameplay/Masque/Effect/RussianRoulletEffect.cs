@@ -11,9 +11,14 @@ public class RussianRoulletEffect : MaskEffect
 {
     public event Action<RussianRoulletEffect> IsVisibile; 
     
-    public override void ApplyEffect( )
+   // public override void ApplyEffect( )
+    //{
+     //   IsVisibile?.Invoke(this);
+    //}
+
+    public override void ApplyEffect(TurnManager manager)
     {
-        IsVisibile?.Invoke(this);
+        throw new NotImplementedException();
     }
 
     public override void RemoveEffect( )

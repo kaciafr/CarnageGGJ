@@ -8,36 +8,39 @@ using UnityEngine;
 [CreateAssetMenu(menuName = ("Effect/ReloadHitEffect"))]
 public class ReloadHitEffect : MaskEffect
 {
-	public override void ApplyEffect( )
-	{
-	}
+    public int healthCost = 5;
+    
+    private bool hasBeenUsed = false;
 
-	public override void RemoveEffect()
-	{
-		throw new NotImplementedException();
-	}
+    public override void ApplyEffect(TurnManager manager)
+    {
+        if (hasBeenUsed)
+        {
+            Debug.Log("⚠️ Masque déjà utilisé cette partie !");
+            return;
+        }
+        
+        CardPlayer player = manager.CurrentTurnPlayer;
+        
+        player.TakeDamage(healthCost);
+        
+        player.MainHand.Clear();
 
+        for (int i = 0; i < manager.Metrics.HandSize; i++)
+        {
+            ICard card = manager.Deck.DrawCard();
+            player.MainHand.AddCard(card);
+        }
+        
+        hasBeenUsed = true;
+        
+        Debug.Log($" Masque utilisé ! {player.name} perd {healthCost} PV (Plus disponible)");
+    }
 
-	/*
-		Debug.Log("ReloadHitEffect");
-
-		int count = hand.MaxCards;
-		var removeCard = hand.Cards.ToArray();
-		
-		
-		if (hand.Cards.Count == 0)
-		{
-			Debug.Log("Hand is empty, adding test cards");
-			for (int i = 0; i < hand.MaxCards; i++)
-				hand.AddCard(deck.DrawCard());
-		}
-		
-		for (int i = 0; i < count; i++)
-		{
-			var drawn = deck.DrawCard();
-			if (drawn != null)
-				hand.AddCard(drawn);
-			Debug.Log("Removing: " + drawn);
-		}*/
-	
+    public override void RemoveEffect()
+    {
+        hasBeenUsed = false;
+    }
+    
+    public bool CanBeUsed() => !hasBeenUsed;
 }

@@ -8,7 +8,8 @@ namespace Masque
 	public class MaskManager : MonoBehaviour
 	{
 		public MaskData currentMask;
-		public MaskData newMask;
+		
+		public TurnManager turnManager;
 		
 		public Hand hand { get; private set; }
 		public Deck deck { get; private set; }
@@ -25,7 +26,7 @@ namespace Masque
 
 			currentMask = mask;
 			//mask.Effect.ApplyPlayerEffect(hand, deck, null);
-			mask.Effect.ApplyEffect();
+			mask.Effect.ApplyEffect(turnManager);
 		}
 
 		public void UnequipMask(MaskData mask)

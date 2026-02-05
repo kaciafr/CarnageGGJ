@@ -29,11 +29,12 @@ public class TurnManager : MonoBehaviour
     [field: SerializeField] 
     public GameMetrics Metrics { get; private set; }
 
-    [Header("Game Over Settings")]
     [SerializeField] private int moneyReward = 500;
     [SerializeField] private float delayBeforeRetry = 2f;
 
     private Coroutine gameCoroutine;
+
+    public ReloadHitEffect reloadHitEffect;
 
     private void Awake()
     {
@@ -191,4 +192,16 @@ public class TurnManager : MonoBehaviour
         Deck.FillCollectionWithAllCards(Metrics);
         Deck.Shuffle();
     }
+
+    public void UseMask()
+    {
+        reloadHitEffect.ApplyEffect(this);
+        
+        RefreshDeck();
+        
+    }
+    
+    
+  
+
 }
