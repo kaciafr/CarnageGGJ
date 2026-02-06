@@ -38,7 +38,7 @@ public class TurnManager : MonoBehaviour
     [Header("⏳ Cooldowns des Masques")]
     [SerializeField] private int cooldownDuration = 3;
 
-    private Coroutine gameCoroutine;
+    public Coroutine gameCoroutine { get; private set; }
 
     public MaskManager MaskManager; 
 
@@ -68,8 +68,9 @@ public class TurnManager : MonoBehaviour
         gameCoroutine = StartCoroutine(PlayCardGame());
     }
 
-    private IEnumerator PlayCardGame()
+    public IEnumerator PlayCardGame()
     {
+        Debug.Log("AAAAAAAAAAAA");
         OnGameStarted?.Invoke();
         Deck.FillCollectionWithAllCards(Metrics);
         Deck.Shuffle();
