@@ -64,6 +64,7 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("TurnManager Start");
         gameCoroutine = StartCoroutine(PlayCardGame());
     }
 

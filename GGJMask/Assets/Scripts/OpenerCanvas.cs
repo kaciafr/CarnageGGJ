@@ -14,9 +14,34 @@ public class SimpleCanvasOpener : MonoBehaviour
             Debug.LogError(" CANVAS PAS ASSIGNÉ !");
             return;
         }
-        
-        canvas.gameObject.SetActive(false);
-        Debug.Log("Canvas désactivé au démarrage");
+
+        HideCanvas();
+        Debug.Log("Canvas caché au démarrage");
+    }
+
+    CanvasGroup GetCanvasGroup()
+    {
+        CanvasGroup canvasGroup = canvas.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = canvas.gameObject.AddComponent<CanvasGroup>();
+        return canvasGroup;
+    }
+    
+    void HideCanvas()
+    {
+        CanvasGroup canvasGroup = GetCanvasGroup();
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+    }
+    
+    void ShowCanvas()
+    {
+        CanvasGroup canvasGroup = GetCanvasGroup();
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        canvas.enabled = true;
     }
 
     void Update()
@@ -25,7 +50,7 @@ public class SimpleCanvasOpener : MonoBehaviour
 
         if (Input.GetKeyDown(toggleKey))
         {
-            canvas.gameObject.SetActive(true);
+            ShowCanvas();
             Debug.Log(" Canvas OUVERT !");
         }
     }
@@ -33,7 +58,7 @@ public class SimpleCanvasOpener : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"👤 Trigger Enter avec : {other.name} (Tag: {other.tag})");
+        Debug.Log($"Trigger Enter avec : {other.name} (Tag: {other.tag})");
         
         if (other.CompareTag("Player"))
         {
